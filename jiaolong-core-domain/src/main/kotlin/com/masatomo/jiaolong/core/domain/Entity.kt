@@ -39,16 +39,16 @@ class DomainEntityBuilderSupport<T : DomainEntity<*>> {
         if (convertingMessages.isEmpty()) Result.success(supplier())
         else Result.failure(EntityBuilder.BuildingException(convertingMessages))
 
-    inline fun <reified T : IntValue<*>> toIntValue(from: Int, property: KMutableProperty0<T?>): T =
+    inline fun <reified T : IntValue> toIntValue(from: Int, property: KMutableProperty0<T?>): T =
         T::class.primaryConstructor!!.call(from).apply { property.set(this) }
 
-    inline fun <reified T : IntValue<*>> toIntValue(from: String, property: KMutableProperty0<T?>) =
+    inline fun <reified T : IntValue> toIntValue(from: String, property: KMutableProperty0<T?>) =
         from.toIntOrNull()?.apply { toIntValue(this, property) } ?: convertingMessages.add(CannotConvert(from, Int::class))
 
-    inline fun <reified T : StringValue<*>> toStringValue(from: String, property: KMutableProperty0<T?>): T =
+    inline fun <reified T : StringValue> toStringValue(from: String, property: KMutableProperty0<T?>): T =
         T::class.primaryConstructor!!.call(from).apply { property.set(this) }
 
-    inline fun <reified T : StringValue<*>> toStringValue(from: Int, property: KMutableProperty0<T?>): T = toStringValue(from.toString(), property)
+    inline fun <reified T : StringValue> toStringValue(from: Int, property: KMutableProperty0<T?>): T = toStringValue(from.toString(), property)
 }
 
 

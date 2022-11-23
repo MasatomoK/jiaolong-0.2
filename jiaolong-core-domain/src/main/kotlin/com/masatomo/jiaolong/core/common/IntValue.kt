@@ -1,132 +1,126 @@
 package com.masatomo.jiaolong.core.common
 
 import com.masatomo.jiaolong.core.domain.InlineDomainValue
-import com.masatomo.jiaolong.core.validation.AnnotatedValueValidator
 import com.masatomo.jiaolong.core.validation.InvalidDomainValue
+import com.masatomo.jiaolong.core.validation.toValidator
+import com.masatomo.jiaolong.core.validation.validateBy
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
 
-interface IntValue<V : IntValue<V>> : InlineDomainValue<Int, V> {
+interface IntValue : InlineDomainValue<Int> {
 
     companion object {
         operator fun invoke(value: Int) = Anonymous(value)
+
+        @JvmInline
+        value class Anonymous(override val value: Int) : IntValue
     }
 
-    @JvmInline
-    value class Anonymous(override val value: Int) : IntValue<Anonymous>
-
-
-    override val annotatedValidators: Array<AnnotatedValueValidator<V>>
-        get() = Validations.allValidator()
+    override fun isValid(): Collection<InvalidDomainValue> = validateBy(*Validations.predefinedValidators)
 
 
     object Validations {
-        @Suppress("UNCHECKED_CAST")
-        fun <V : IntValue<V>> allValidator(): Array<AnnotatedValueValidator<V>> = arrayOf(
-            Positive::class to { (this as Positive).validate(it as V) },
-            Negative::class to { (this as Negative).validate(it as V) },
-            Minimum::class to { (this as Minimum).validate(it as V) },
-            Maximum::class to { (this as Maximum).validate(it as V) },
-            Even::class to { (this as Even).validate(it as V) },
-            Odd::class to { (this as Odd).validate(it as V) },
+
+        val predefinedValidators = arrayOf(
+            Positive::class.toValidator(Positive::validate),
+            Negative::class.toValidator(Negative::validate),
+            Minimum::class.toValidator(Minimum::validate),
+            Maximum::class.toValidator(Maximum::validate),
+            Even::class.toValidator(Even::validate),
+            Odd::class.toValidator(Odd::validate),
         )
 
+        @Target(AnnotationTarget.CLASS)
+        annotation class Positive
 
         @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
-        annotation class Positive {
-
-            data class NotPositiveInt<T : IntValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: Int,
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : IntValue<V>> Positive.validate(target: V): Positive.NotPositiveInt<V>? =
-            target.takeIf { it.value <= 0 }
-                ?.let { Positive.NotPositiveInt(it::class, it.value) }
-
+        annotation class Negative
 
         @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
-        annotation class Negative {
-            data class NotNegativeInt<T : IntValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: Int,
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : IntValue<V>> Negative.validate(target: V): Negative.NotNegativeInt<V>? =
-            target.takeIf { it.value >= 0 }
-                ?.let { Negative.NotNegativeInt(it::class, it.value) }
-
-
-        @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
         annotation class Minimum(
             val minimum: Int = Int.MIN_VALUE,
             val include: Boolean = true,
-        ) {
-            data class LessMinimumInt<T : IntValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: Int,
-                val minimum: Int,
-                val include: Boolean
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : IntValue<V>> Minimum.validate(target: V): Minimum.LessMinimumInt<V>? =
-            target.takeIf { it.value < minimum || (!include && it.value == minimum) }
-                ?.let { Minimum.LessMinimumInt(it::class, it.value, minimum, include) }
-
+        )
 
         @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
+        @MustBeDocumented
         annotation class Maximum(
             val maximum: Int = Int.MAX_VALUE,
             val include: Boolean = true,
-        ) {
-            data class MoreMaximumInt<T : IntValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: Int,
-                val minimum: Int,
-                val include: Boolean
-            ) : InvalidDomainValue<T>
-        }
+        )
 
-        private fun <V : IntValue<V>> Maximum.validate(target: V): Maximum.MoreMaximumInt<V>? =
-            target.takeIf { maximum < it.value || (!include && it.value == maximum) }
-                ?.let { Maximum.MoreMaximumInt(it::class, it.value, maximum, include) }
+        @Target(AnnotationTarget.CLASS)
+        annotation class Even
 
 
         @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
-        annotation class Even {
-            data class NotEvenInt<T : IntValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: Int,
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : IntValue<V>> Even.validate(target: V): Even.NotEvenInt<V>? =
-            target.takeIf { it.value % 2 == 1 }
-                ?.let { Even.NotEvenInt(it::class, it.value) }
-
-
-        @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
-        annotation class Odd {
-            data class NotOddInt<T : IntValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: Int,
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : IntValue<V>> Odd.validate(target: V): Odd.NotOddInt<V>? =
-            target.takeIf { it.value % 2 == 0 }
-                ?.let { Odd.NotOddInt(it::class, it.value) }
+        annotation class Odd
     }
 }
 
-inline fun <V : IntValue<V>, reified R : IntValue<R>> V.to(): R = R::class.primaryConstructor!!.call(value)
+private fun <V : IntValue> IntValue.Validations.Positive.validate(target: V): NotPositiveInt<V>? =
+    target.takeIf { it.value <= 0 }
+        ?.let { NotPositiveInt(it::class, it.value) }
+
+data class NotPositiveInt<V : IntValue>(
+    override val kClass: KClass<out V>,
+    val actual: Int,
+) : InvalidDomainValue
+
+
+private fun <V : IntValue> IntValue.Validations.Negative.validate(target: V): NotNegativeInt<V>? =
+    target.takeIf { it.value >= 0 }
+        ?.let { NotNegativeInt(it::class, it.value) }
+
+data class NotNegativeInt<V : IntValue>(
+    override val kClass: KClass<out V>,
+    val actual: Int,
+) : InvalidDomainValue
+
+
+private fun <V : IntValue> IntValue.Validations.Minimum.validate(target: V): LessMinimumInt<V>? =
+    target.takeIf { it.value < minimum || (!include && it.value == minimum) }
+        ?.let { LessMinimumInt(it::class, it.value, minimum, include) }
+
+data class LessMinimumInt<V : IntValue>(
+    override val kClass: KClass<out V>,
+    val actual: Int,
+    val minimum: Int,
+    val include: Boolean
+) : InvalidDomainValue
+
+
+private fun <V : IntValue> IntValue.Validations.Maximum.validate(target: V): MoreMaximumInt<V>? =
+    target.takeIf { maximum < it.value || (!include && it.value == maximum) }
+        ?.let { MoreMaximumInt(it::class, it.value, maximum, include) }
+
+data class MoreMaximumInt<V : IntValue>(
+    override val kClass: KClass<out V>,
+    val actual: Int,
+    val minimum: Int,
+    val include: Boolean
+) : InvalidDomainValue
+
+
+private fun <V : IntValue> IntValue.Validations.Even.validate(target: V): NotEvenInt<V>? =
+    target.takeIf { it.value % 2 == 1 }
+        ?.let { NotEvenInt(it::class, it.value) }
+
+data class NotEvenInt<V : IntValue>(
+    override val kClass: KClass<out V>,
+    val actual: Int,
+) : InvalidDomainValue
+
+
+private fun <V : IntValue> IntValue.Validations.Odd.validate(target: V): NotOddInt<V>? =
+    target.takeIf { it.value % 2 == 0 }
+        ?.let { NotOddInt(it::class, it.value) }
+
+data class NotOddInt<V : IntValue>(
+    override val kClass: KClass<out V>,
+    val actual: Int,
+) : InvalidDomainValue
+
+
+inline fun <V : IntValue, reified R : IntValue> V.to(): R = R::class.primaryConstructor!!.call(value)

@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 @IntValue.Validations.Minimum(0)
 private class MinInt(
     override val value: Int
-) : IntValue<MinInt>
+) : IntValue
 
 class IntValueTest {
     @Test
@@ -21,7 +21,7 @@ class IntValueTest {
     fun test_invalid_minimum() {
         assertEquals(
             MinInt(-1).isValid(),
-            listOf(IntValue.Validations.Minimum.LessMinimumInt(MinInt::class, -1, 0, true))
+            listOf(LessMinimumInt(MinInt::class, -1, 0, true))
         )
     }
 }

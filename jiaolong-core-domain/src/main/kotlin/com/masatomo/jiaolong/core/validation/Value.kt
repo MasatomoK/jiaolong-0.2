@@ -4,28 +4,23 @@ import com.masatomo.jiaolong.core.domain.DomainValue
 import kotlin.reflect.KClass
 
 
-interface InvalidDomainValue<V : DomainValue<V>> {
-    val kClass: KClass<out V>
+interface InvalidDomainValue {
+    val kClass: KClass<out DomainValue>
 }
 
 
-typealias AnnotatedValueValidator<V> =
-        Pair<KClass<out Annotation>, Annotation.(DomainValue<V>) -> InvalidDomainValue<V>?>
+data class AnnotatedValueValidator<in V : DomainValue>(
+    val annClass: KClass<out Annotation>,
+    val validation: Annotation.(V) -> InvalidDomainValue?
+)
 
-typealias CustomValueValidator<V> = (DomainValue<V>) -> InvalidDomainValue<V>?
+@Suppress("UNCHECKED_CAST")
+fun <A : Annotation, V : DomainValue> KClass<out A>.toValidator(
+    validation: A.(V) -> InvalidDomainValue?
+) = AnnotatedValueValidator<V>(this) { validation.invoke(this as A, it) }
 
-
-fun <V : DomainValue<V>> DomainValue<V>.validateBy(
-    annotatedValidators: Array<AnnotatedValueValidator<V>>,
-    customValidators: Array<CustomValueValidator<V>>,
-) = listOf(*validateBy(*annotatedValidators).toTypedArray(), *validateBy(*customValidators).toTypedArray())
-
-fun <V : DomainValue<V>> DomainValue<V>.validateBy(
+fun <V : DomainValue> V.validateBy(
     vararg validators: AnnotatedValueValidator<V>
 ) = this::class.annotations.mapNotNull { ann ->
-    validators.firstOrNull { it.first == ann.annotationClass }?.second?.invoke(ann, this)
+    validators.firstOrNull { it.annClass == ann.annotationClass }?.validation?.invoke(ann, this)
 }
-
-fun <V : DomainValue<V>> DomainValue<V>.validateBy(
-    vararg validators: CustomValueValidator<V>
-) = validators.mapNotNull { it.invoke(this) }

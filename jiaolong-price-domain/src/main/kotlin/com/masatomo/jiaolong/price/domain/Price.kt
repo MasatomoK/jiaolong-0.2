@@ -6,15 +6,12 @@ import java.math.BigDecimal
 
 @JvmInline
 @BigDecimalValue.Validations.Maximum("")
-value class Price(override val value: BigDecimal) : BigDecimalValue<Price> {
-}
+value class Price(override val value: BigDecimal) : BigDecimalValue
 
 @JvmInline
 @BigDecimalValue.Validations.Maximum("")
-value class Volume(override val value: BigDecimal) : BigDecimalValue<Volume> {
-}
+value class Volume(override val value: BigDecimal) : BigDecimalValue
 
 @JvmInline
 @BigDecimalValue.Validations.Maximum("")
-value class DateTime(override val value: BigDecimal) : BigDecimalValue<Price> {
-}
+value class DateTime(override val value: BigDecimal) : BigDecimalValue

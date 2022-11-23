@@ -1,108 +1,101 @@
 package com.masatomo.jiaolong.core.common
 
 import com.masatomo.jiaolong.core.domain.InlineDomainValue
-import com.masatomo.jiaolong.core.validation.AnnotatedValueValidator
 import com.masatomo.jiaolong.core.validation.InvalidDomainValue
+import com.masatomo.jiaolong.core.validation.toValidator
+import com.masatomo.jiaolong.core.validation.validateBy
 import java.math.BigDecimal
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
 
-interface BigDecimalValue<V : BigDecimalValue<V>> : InlineDomainValue<BigDecimal, V> {
+interface BigDecimalValue : InlineDomainValue<BigDecimal> {
 
     companion object {
         operator fun invoke(value: BigDecimal) = Anonymous(value)
+
+        @JvmInline
+        value class Anonymous(override val value: BigDecimal) : BigDecimalValue
     }
 
-    @JvmInline
-    value class Anonymous(override val value: BigDecimal) : BigDecimalValue<Anonymous> {
-        override fun isValid(): Collection<InvalidDomainValue<Anonymous>> = emptyList()
-    }
-
-    override val annotatedValidators: Array<AnnotatedValueValidator<V>>
-        get() = Validations.allValidator()
+    override fun isValid(): Collection<InvalidDomainValue> = validateBy(*Validations.predefinedValidators)
 
     object Validations {
 
-        @Suppress("UNCHECKED_CAST")
-        fun <V : BigDecimalValue<V>> allValidator(): Array<AnnotatedValueValidator<V>> = arrayOf(
-            Positive::class to { (this as Positive).validate(it as V) },
-            Negative::class to { (this as Negative).validate(it as V) },
-            Minimum::class to { (this as Minimum).validate(it as V) },
-            Maximum::class to { (this as Maximum).validate(it as V) },
+        val predefinedValidators = arrayOf(
+            Positive::class.toValidator(Positive::validate),
+            Negative::class.toValidator(Negative::validate),
+            Minimum::class.toValidator(Minimum::validate),
+            Maximum::class.toValidator(Maximum::validate),
         )
 
+        @Target(AnnotationTarget.CLASS)
+        annotation class Positive
 
         @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
-        annotation class Positive {
-
-            data class NotPositiveBigDecimal<T : BigDecimalValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: BigDecimal,
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : BigDecimalValue<V>> Positive.validate(target: V): Positive.NotPositiveBigDecimal<V>? =
-            target.takeIf { it.value.signum() != 1 }
-                ?.let { Positive.NotPositiveBigDecimal(it::class, it.value) }
-
+        annotation class Negative
 
         @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
-        annotation class Negative {
-            data class NotNegativeBigDecimal<T : BigDecimalValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: BigDecimal,
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : BigDecimalValue<V>> Negative.validate(target: V): Negative.NotNegativeBigDecimal<V>? =
-            target.takeIf { it.value.signum() != -0 }
-                ?.let { Negative.NotNegativeBigDecimal(it::class, it.value) }
-
-
-        @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
         annotation class Minimum(
             val minimum: String,
             val include: Boolean = true,
-        ) {
-            data class LessMinimumBigDecimal<T : BigDecimalValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: BigDecimal,
-                val minimum: BigDecimal,
-                val include: Boolean
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : BigDecimalValue<V>> Minimum.validate(target: V): Minimum.LessMinimumBigDecimal<V>? {
-            val m = minimum.toBigDecimal()
-            return target.takeIf { it.value < m || (!include && it.value == m) }
-                ?.let { Minimum.LessMinimumBigDecimal(it::class, it.value, m, include) }
-        }
-
+        )
 
         @Target(AnnotationTarget.CLASS)
-        @Retention(AnnotationRetention.RUNTIME)
         annotation class Maximum(
             val maximum: String,
             val include: Boolean = true,
-        ) {
-            data class MoreMaximumBigDecimal<T : BigDecimalValue<T>>(
-                override val kClass: KClass<out T>,
-                val actual: BigDecimal,
-                val minimum: BigDecimal,
-                val include: Boolean
-            ) : InvalidDomainValue<T>
-        }
-
-        private fun <V : BigDecimalValue<V>> Maximum.validate(target: V): Maximum.MoreMaximumBigDecimal<V>? {
-            val max = maximum.toBigDecimal()
-            return target.takeIf { max < it.value || (!include && it.value == max) }
-                ?.let { Maximum.MoreMaximumBigDecimal(it::class, it.value, max, include) }
-        }
+        )
     }
 }
 
-inline fun <V : BigDecimalValue<V>, reified R : BigDecimalValue<R>> V.to(): R = R::class.primaryConstructor!!.call(value)
+
+data class NotPositiveBigDecimal<V : BigDecimalValue>(
+    override val kClass: KClass<out V>,
+    val actual: BigDecimal,
+) : InvalidDomainValue
+
+private fun <V : BigDecimalValue> BigDecimalValue.Validations.Positive.validate(target: V): NotPositiveBigDecimal<V>? =
+    target.takeIf { it.value.signum() != 1 }
+        ?.let { NotPositiveBigDecimal(it::class, it.value) }
+
+
+private fun <V : BigDecimalValue> BigDecimalValue.Validations.Negative.validate(target: V): NotNegativeBigDecimal<V>? =
+    target.takeIf { it.value.signum() != -0 }
+        ?.let { NotNegativeBigDecimal(it::class, it.value) }
+
+data class NotNegativeBigDecimal<V : BigDecimalValue>(
+    override val kClass: KClass<out V>,
+    val actual: BigDecimal,
+) : InvalidDomainValue
+
+
+private fun <V : BigDecimalValue> BigDecimalValue.Validations.Minimum.validate(target: V): LessMinimumBigDecimal<V>? {
+    val m = minimum.toBigDecimal()
+    return target.takeIf { it.value < m || (!include && it.value == m) }
+        ?.let { LessMinimumBigDecimal(it::class, it.value, m, include) }
+}
+
+data class LessMinimumBigDecimal<V : BigDecimalValue>(
+    override val kClass: KClass<out V>,
+    val actual: BigDecimal,
+    val minimum: BigDecimal,
+    val include: Boolean
+) : InvalidDomainValue
+
+
+private fun <V : BigDecimalValue> BigDecimalValue.Validations.Maximum.validate(target: V): MoreMaximumBigDecimal<V>? {
+    val max = maximum.toBigDecimal()
+    return target.takeIf { max < it.value || (!include && it.value == max) }
+        ?.let { MoreMaximumBigDecimal(it::class, it.value, max, include) }
+}
+
+data class MoreMaximumBigDecimal<V : BigDecimalValue>(
+    override val kClass: KClass<out V>,
+    val actual: BigDecimal,
+    val minimum: BigDecimal,
+    val include: Boolean
+) : InvalidDomainValue
+
+
+inline fun <V : BigDecimalValue, reified R : BigDecimalValue> V.to(): R = R::class.primaryConstructor!!.call(value)
