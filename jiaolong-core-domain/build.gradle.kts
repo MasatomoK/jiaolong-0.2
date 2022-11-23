@@ -1,1 +1,3 @@
-dependencies {}
+dependencies {
+    api(notation(Kotlin.reflect))
+}

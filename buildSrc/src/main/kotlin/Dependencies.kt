@@ -25,11 +25,12 @@ private fun Project.version(artifact: ArtifactGroup.Artifact): String =
 
 
 object Jiaolong {
-    object Core : ProjectGroup("", "jiaolong-core") {
+    object Core : ProjectGroup("", ) {
         val domain = project("jiaolong-core-domain")
     }
 
-    object Application : ProjectGroup("", "jiaolong-application") {
+    object Price : ProjectGroup("") {
+        val domain = project("jiaolong-price-domain")
     }
 }
 
