@@ -28,11 +28,13 @@ inline fun <V : LocalDateValue, reified R : LocalDateValue> V.to(): R = R::class
 
 object LocalDateValidations {
 
-    val predefinedValidators = arrayOf(
-        Minimum::class.toValidator(Minimum::validate),
-        Maximum::class.toValidator(Maximum::validate),
-        DayOfWeek::class.toValidator(DayOfWeek::validate),
-    )
+    val predefinedValidators by lazy {
+        arrayOf(
+            Minimum::class.toValidator(Minimum::validate),
+            Maximum::class.toValidator(Maximum::validate),
+            DayOfWeek::class.toValidator(DayOfWeek::validate),
+        )
+    }
 
     @Target(AnnotationTarget.CLASS)
     annotation class Minimum(

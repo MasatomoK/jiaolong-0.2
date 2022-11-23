@@ -18,46 +18,51 @@ interface StringValue : InlineDomainValue<String> {
     }
 
     override fun isValid() = validateBy(*StringValidations.predefinedValidators)
+}
 
 
-    object StringValidations {
-        val predefinedValidators = arrayOf(
+inline fun <V : StringValue, reified R : StringValue> V.to(): R = R::class.primaryConstructor!!.call(value)
+
+
+object StringValidations {
+    val predefinedValidators by lazy {
+        arrayOf(
             MinimumLength::class.toValidator(MinimumLength::validate),
             MaximumLength::class.toValidator(MaximumLength::validate),
             MatchRegex::class.toValidator(MatchRegex::validate),
         )
+    }
 
-        @Target(AnnotationTarget.CLASS)
-        annotation class MinimumLength(
-            val limit: Int
-        )
+    @Target(AnnotationTarget.CLASS)
+    annotation class MinimumLength(
+        val limit: Int
+    )
 
-        @Target(AnnotationTarget.CLASS)
-        annotation class MaximumLength(
-            val limit: Int
-        )
+    @Target(AnnotationTarget.CLASS)
+    annotation class MaximumLength(
+        val limit: Int
+    )
 
-        /**
-         *  typeがMANUALの場合のみname, customの設定が使用される。
-         */
-        @Target(AnnotationTarget.CLASS)
-        annotation class MatchRegex(
-            val type: InstalledPattern,
-            val name: String = "",
-            val pattern: String = "",
-        ) {
-            enum class InstalledPattern(val pattern: String) {
-                MANUAL(""),  // 本当はRegexPattern自体をSealedClassにしたいが、annotationで使用するためやむなし。
-                ANY(".*"),
-                UPPER_CASES("[A-Z]*"),
-                LOWER_CASE("[a-z]*"),
-                ;
-            }
+    /**
+     *  typeがMANUALの場合のみname, customの設定が使用される。
+     */
+    @Target(AnnotationTarget.CLASS)
+    annotation class MatchRegex(
+        val type: InstalledPattern,
+        val name: String = "",
+        val pattern: String = "",
+    ) {
+        enum class InstalledPattern(val pattern: String) {
+            MANUAL(""),  // 本当はRegexPattern自体をSealedClassにしたいが、annotationで使用するためやむなし。
+            ANY(".*"),
+            UPPER_CASES("[A-Z]*"),
+            LOWER_CASE("[a-z]*"),
+            ;
         }
     }
 }
 
-private fun <V : StringValue> StringValue.StringValidations.MinimumLength.validate(target: V): ShortLengthString<V>? =
+private fun <V : StringValue> StringValidations.MinimumLength.validate(target: V): ShortLengthString<V>? =
     target.takeIf { it.value.length < limit }
         ?.let { ShortLengthString(it::class, it.value, limit) }
 
@@ -67,7 +72,7 @@ data class ShortLengthString<V : StringValue>(
     val limit: Int
 ) : InvalidDomainValue
 
-private fun <V : StringValue> StringValue.StringValidations.MaximumLength.validate(target: V): LongLengthString<V>? =
+private fun <V : StringValue> StringValidations.MaximumLength.validate(target: V): LongLengthString<V>? =
     target.takeIf { target.value.length < limit }
         ?.let { LongLengthString(it::class, it.value, limit) }
 
@@ -79,8 +84,8 @@ data class LongLengthString<V : StringValue>(
 ) : InvalidDomainValue
 
 
-private fun <V : StringValue> StringValue.StringValidations.MatchRegex.validate(target: V): UnmatchRegexString<V>? {
-    val (name, regex) = if (type == StringValue.StringValidations.MatchRegex.InstalledPattern.MANUAL) {
+private fun <V : StringValue> StringValidations.MatchRegex.validate(target: V): UnmatchRegexString<V>? {
+    val (name, regex) = if (type == StringValidations.MatchRegex.InstalledPattern.MANUAL) {
         name to regexCache.computeIfAbsent(pattern) { Regex(it) }
     } else {
         type.name.lowercase() to regexCache.computeIfAbsent(type.pattern) { Regex(it) }
@@ -97,6 +102,3 @@ data class UnmatchRegexString<V : StringValue>(
 ) : InvalidDomainValue
 
 private val regexCache = mutableMapOf<String, Regex>()
-
-
-inline fun <V : StringValue, reified R : StringValue> V.to(): R = R::class.primaryConstructor!!.call(value)

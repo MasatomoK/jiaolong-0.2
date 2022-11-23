@@ -17,12 +17,13 @@ interface IntValue : InlineDomainValue<Int> {
         value class Anonymous(override val value: Int) : IntValue
     }
 
-    override fun isValid(): Collection<InvalidDomainValue> = validateBy(*Validations.predefinedValidators)
+    override fun isValid(): Collection<InvalidDomainValue> = validateBy(*IntValidations.predefinedValidators)
+}
 
+object IntValidations {
 
-    object Validations {
-
-        val predefinedValidators = arrayOf(
+    val predefinedValidators by lazy {
+        arrayOf(
             Positive::class.toValidator(Positive::validate),
             Negative::class.toValidator(Negative::validate),
             Minimum::class.toValidator(Minimum::validate),
@@ -30,36 +31,37 @@ interface IntValue : InlineDomainValue<Int> {
             Even::class.toValidator(Even::validate),
             Odd::class.toValidator(Odd::validate),
         )
-
-        @Target(AnnotationTarget.CLASS)
-        annotation class Positive
-
-        @Target(AnnotationTarget.CLASS)
-        annotation class Negative
-
-        @Target(AnnotationTarget.CLASS)
-        annotation class Minimum(
-            val minimum: Int = Int.MIN_VALUE,
-            val include: Boolean = true,
-        )
-
-        @Target(AnnotationTarget.CLASS)
-        @MustBeDocumented
-        annotation class Maximum(
-            val maximum: Int = Int.MAX_VALUE,
-            val include: Boolean = true,
-        )
-
-        @Target(AnnotationTarget.CLASS)
-        annotation class Even
-
-
-        @Target(AnnotationTarget.CLASS)
-        annotation class Odd
     }
+
+    @Target(AnnotationTarget.CLASS)
+    annotation class Positive
+
+    @Target(AnnotationTarget.CLASS)
+    annotation class Negative
+
+    @Target(AnnotationTarget.CLASS)
+    annotation class Minimum(
+        val minimum: Int = Int.MIN_VALUE,
+        val include: Boolean = true,
+    )
+
+    @Target(AnnotationTarget.CLASS)
+    @MustBeDocumented
+    annotation class Maximum(
+        val maximum: Int = Int.MAX_VALUE,
+        val include: Boolean = true,
+    )
+
+    @Target(AnnotationTarget.CLASS)
+    annotation class Even
+
+
+    @Target(AnnotationTarget.CLASS)
+    annotation class Odd
 }
 
-private fun <V : IntValue> IntValue.Validations.Positive.validate(target: V): NotPositiveInt<V>? =
+
+private fun <V : IntValue> IntValidations.Positive.validate(target: V): NotPositiveInt<V>? =
     target.takeIf { it.value <= 0 }
         ?.let { NotPositiveInt(it::class, it.value) }
 
@@ -69,7 +71,7 @@ data class NotPositiveInt<V : IntValue>(
 ) : InvalidDomainValue
 
 
-private fun <V : IntValue> IntValue.Validations.Negative.validate(target: V): NotNegativeInt<V>? =
+private fun <V : IntValue> IntValidations.Negative.validate(target: V): NotNegativeInt<V>? =
     target.takeIf { it.value >= 0 }
         ?.let { NotNegativeInt(it::class, it.value) }
 
@@ -79,7 +81,7 @@ data class NotNegativeInt<V : IntValue>(
 ) : InvalidDomainValue
 
 
-private fun <V : IntValue> IntValue.Validations.Minimum.validate(target: V): LessMinimumInt<V>? =
+private fun <V : IntValue> IntValidations.Minimum.validate(target: V): LessMinimumInt<V>? =
     target.takeIf { it.value < minimum || (!include && it.value == minimum) }
         ?.let { LessMinimumInt(it::class, it.value, minimum, include) }
 
@@ -91,7 +93,7 @@ data class LessMinimumInt<V : IntValue>(
 ) : InvalidDomainValue
 
 
-private fun <V : IntValue> IntValue.Validations.Maximum.validate(target: V): MoreMaximumInt<V>? =
+private fun <V : IntValue> IntValidations.Maximum.validate(target: V): MoreMaximumInt<V>? =
     target.takeIf { maximum < it.value || (!include && it.value == maximum) }
         ?.let { MoreMaximumInt(it::class, it.value, maximum, include) }
 
@@ -103,7 +105,7 @@ data class MoreMaximumInt<V : IntValue>(
 ) : InvalidDomainValue
 
 
-private fun <V : IntValue> IntValue.Validations.Even.validate(target: V): NotEvenInt<V>? =
+private fun <V : IntValue> IntValidations.Even.validate(target: V): NotEvenInt<V>? =
     target.takeIf { it.value % 2 == 1 }
         ?.let { NotEvenInt(it::class, it.value) }
 
@@ -113,7 +115,7 @@ data class NotEvenInt<V : IntValue>(
 ) : InvalidDomainValue
 
 
-private fun <V : IntValue> IntValue.Validations.Odd.validate(target: V): NotOddInt<V>? =
+private fun <V : IntValue> IntValidations.Odd.validate(target: V): NotOddInt<V>? =
     target.takeIf { it.value % 2 == 0 }
         ?.let { NotOddInt(it::class, it.value) }
 

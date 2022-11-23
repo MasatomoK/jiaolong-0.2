@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 
-@IntValue.Validations.Minimum(0)
+@IntValidations.Minimum(0)
 private class MinInt(
     override val value: Int
 ) : IntValue
