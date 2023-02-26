@@ -1,1 +1,5 @@
+plugins {
+    setup.kotlin
+}
+
 dependencies {}

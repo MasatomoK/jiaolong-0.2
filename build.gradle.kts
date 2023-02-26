@@ -1,13 +1,13 @@
-plugins {}
+plugins {
+    `kotlin-dsl`
+}
 
 allprojects {
     repositories {
         mavenCentral()
     }
-
-    applyStyle()
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "7.5"
+    gradleVersion = "8.0.1"
 }

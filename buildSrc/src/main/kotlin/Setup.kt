@@ -1,10 +1,10 @@
 import com.github.gradle.node.NodePlugin
 import com.github.gradle.node.npm.task.NpmTask
+import com.google.devtools.ksp.gradle.KspGradleSubplugin
 import com.google.protobuf.gradle.GenerateProtoTask
 import com.google.protobuf.gradle.ProtobufExtension
 import com.google.protobuf.gradle.ProtobufPlugin
 import com.google.protobuf.gradle.id
-import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePlugin
@@ -15,80 +15,88 @@ import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
+import org.gradle.jvm.tasks.Jar
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.task
 import org.gradle.kotlin.dsl.withType
 import org.gradle.plugins.ide.idea.IdeaPlugin
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-fun Project.applyStyle() {
-    val style = findProperty("projectStyle") as? String ?: ""
-    when {
-        style.contains("java") -> apply<SetupJava>()
-        style.contains("kotlin") -> apply<SetupKotlin>()
-        style.contains("grpc") -> apply<SetupGrpc>()
-        style.contains("node") -> apply<SetupNode>()
-        style.contains("python") -> apply<SetupPython>()
-        style.contains("rust") -> apply<SetupRust>()
-        style.isBlank() -> apply<SetupBase>()
-        else -> logger.warn("Target style not found. [project: ${this.path}, style: $style]")
-    }
-}
 
-private class SetupBase : Plugin<Project> {
+open class SetupBase : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             apply<BasePlugin>()
             apply<IdeaPlugin>()
 
-            tasks.getByName("clean") {
-                this as Delete
+            tasks.withType(Delete::class).getByName("clean") {
                 delete("$projectDir/out")
             }
         }
     }
 }
 
-private class SetupJava : Plugin<Project> {
+class SetupJava : SetupBase() {
     override fun apply(target: Project) {
         target.run {
-            apply<SetupBase>()
+            super.apply(target)
             apply<JavaBasePlugin>()
             apply<JavaLibraryPlugin>()
 
             extensions.getByType<JavaPluginExtension>().apply {
-                sourceCompatibility = JavaVersion.VERSION_17
-                targetCompatibility = JavaVersion.VERSION_17
                 withJavadocJar()
-//                withSourcesJar()
+                withSourcesJar()
+                toolchain {
+                    languageVersion.set(JavaLanguageVersion.of(17))
+                    vendor.set(JvmVendorSpec.AMAZON)
+                }
             }
 
             tasks.withType<JavaCompile>().configureEach {
                 options.encoding = "UTF-8"
             }
+
+            tasks.withType<Jar> {
+                exclude(".gitkeep")
+            }
         }
     }
 }
 
-private class SetupKotlin : Plugin<Project> {
+class SetupKotlin : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
+            val runKsp = findProperty("runKsp") == "true"
+
             apply<SetupJava>()
             apply<KotlinPluginWrapper>()
+            if (runKsp) apply<KspGradleSubplugin>()
 
-            dependencies {
-                "implementation"(notation(Koin.core))  // TODO: remove this
-                "implementation"(notation(SLF4J.simple))
-
-                "testImplementation"(notation(Kotlin.testJunit))
-                "testImplementation"(notation(JUnit.junit5))
+            extensions.getByType<KotlinProjectExtension>().apply {
+                if (runKsp) {
+                    sourceSets.getByName("main") {
+                        kotlin.srcDir("build/generated/ksp/main/kotlin")
+                    }
+                    sourceSets.getByName("test") {
+                        kotlin.srcDir("build/generated/ksp/test/kotlin")
+                    }
+                }
+                jvmToolchain {
+                    languageVersion.set(JavaLanguageVersion.of(17))
+                    vendor.set(JvmVendorSpec.AMAZON)
+                }
             }
 
             tasks.withType<KotlinCompile>().configureEach {
                 kotlinOptions {
+                    apiVersion = "1.8"
+                    languageVersion = "1.8"
                     jvmTarget = "17"
                     // freeCompilerArgs += "-Xkey=value"
                 }
@@ -103,34 +111,23 @@ private class SetupKotlin : Plugin<Project> {
                 testLogging.showStandardStreams = true
             }
 
-            tasks.getByName("processResources") {
-                (this as Copy).exclude("**/.gitkeep")
+            tasks.getByName<Copy>("processResources") {
+                exclude("**/.gitkeep")
             }
         }
     }
 }
 
-private class SetupGrpc : Plugin<Project> {
+class SetupGrpc : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             apply<SetupKotlin>()
             apply<ProtobufPlugin>()
 
-            dependencies {
-                "api"(notation(Javax.annotation))
-                "api"(notation(Protobuf.java))
-                "api"(notation(Protobuf.kotlin))
-                "api"(notation(GRPC.stub))
-                "api"(notation(GRPC.stubKotlin))
-                "api"(notation(GRPC.protobuf))
-
-                "testApi"(notation(GRPC.testing))
-            }
-
             extensions.getByType<ProtobufExtension>().apply {
                 protoc { artifact = notation(Protobuf.protoc) }
 
-                generatedFilesBaseDir = "$projectDir/src"
+                // generatedFilesBaseDir = "$projectDir/src"
 
                 plugins {
                     id("grpc") { artifact = notation(GRPC.gen) }
@@ -160,8 +157,7 @@ private class SetupGrpc : Plugin<Project> {
                 }
             }
 
-            tasks.getByName("clean") {
-                this as Delete
+            tasks.getByName<Delete>("clean") {
                 delete("$projectDir/src/main/cpp")
                 delete("$projectDir/src/main/java")
                 delete("$projectDir/src/main/kotlin")
@@ -173,7 +169,7 @@ private class SetupGrpc : Plugin<Project> {
     }
 }
 
-private class SetupNode : Plugin<Project> {
+class SetupNode : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             apply<SetupBase>()
@@ -188,7 +184,7 @@ private class SetupNode : Plugin<Project> {
 }
 
 
-private class SetupPython : Plugin<Project> {
+class SetupPython : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             apply<SetupBase>()
@@ -200,7 +196,7 @@ private class SetupPython : Plugin<Project> {
     }
 }
 
-private class SetupRust : Plugin<Project> {
+class SetupRust : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             apply<SetupBase>()
