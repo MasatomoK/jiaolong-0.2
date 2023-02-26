@@ -22,5 +22,7 @@ fun <A : Annotation, V : DomainValue> KClass<out A>.toValidator(
 fun <V : DomainValue> V.validateBy(
     vararg validators: AnnotatedValueValidator<V>
 ) = this::class.annotations.mapNotNull { ann ->
-    validators.firstOrNull { it.annClass == ann.annotationClass }?.validation?.invoke(ann, this)
+    validators.firstOrNull { it.annClass == ann.annotationClass }
+        ?.validation
+        ?.invoke(ann, this)
 }

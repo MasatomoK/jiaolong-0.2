@@ -1,20 +1,28 @@
 package com.masatomo.jiaolong.core.validation
 
 import com.masatomo.jiaolong.core.domain.DomainEntity
-import com.masatomo.jiaolong.core.domain.InvalidDomainEntity
 import kotlin.reflect.KClass
 
 
-typealias AnnotatedEntityValidator<E> =
-        Pair<KClass<out Annotation>, Annotation.(DomainEntity<E>) -> InvalidDomainEntity<E>?>
-
-// Entity
-interface InvalidDomainEntity<E : DomainEntity<E>> {
-    val kClass: KClass<out E>
+interface InvalidDomainEntity {
+    val kClass: KClass<out DomainEntity<*>>
 }
 
-fun <E : DomainEntity<E>> DomainEntity<E>.validateBy(
+data class AnnotatedEntityValidator<E : DomainEntity<E>>(
+    val annClass: KClass<out Annotation>,
+    val validation: Annotation.(E) -> InvalidDomainEntity?
+)
+
+@Suppress("UNCHECKED_CAST")
+fun <A : Annotation, E : DomainEntity<E>> KClass<out A>.toValidator(
+    validation: A.(E) -> InvalidDomainEntity?
+) = AnnotatedEntityValidator<E>(this) { validation.invoke(this as A, it) }
+
+
+fun <E : DomainEntity<E>> E.validateBy(
     vararg validators: AnnotatedEntityValidator<E>
 ) = this::class.annotations.mapNotNull { ann ->
-    validators.firstOrNull { it.first == ann.annotationClass }?.second?.invoke(ann, this)
+    validators.firstOrNull { it.annClass == ann.annotationClass }
+        ?.validation
+        ?.invoke(ann, this)
 }
