@@ -14,6 +14,10 @@ object Jiaolong {
     object User {
         const val domain = "jiaolong-user-domain"
     }
+
+    object Server {
+        const val customer = "jiaolong-server-customer"
+    }
 }
 
 include(Jiaolong.Core.ksp)
@@ -21,6 +25,7 @@ include(Jiaolong.Core.domain)
 include(Jiaolong.Core.repository)
 include(Jiaolong.Price.domain)
 include(Jiaolong.User.domain)
+include(Jiaolong.Server.customer)
 
 
 dependencyResolutionManagement {
@@ -82,12 +87,20 @@ dependencyResolutionManagement {
             library("grpc-netty", "io.grpc", "grpc-netty").versionRef(grpcVersion)
             library("grpc-testing", "io.grpc", "grpc-testing").versionRef(grpcVersion)
 
-            val ktorVersion = version("ktor", "2.0.+")
+            val ktorVersion = version("ktor", "2.2.+")
             library("ktor-server-core", "io.ktor", "ktor-server-core").versionRef(ktorVersion)
             library("ktor-server-host-common", "io.ktor", "ktor-server-host-common").versionRef(ktorVersion)
             library("ktor-server-netty", "io.ktor", "ktor-server-netty").versionRef(ktorVersion)
             library("ktor-server-cio", "io.ktor", "ktor-server-cio").versionRef(ktorVersion)
+            library("ktor-server-content-negotiation", "io.ktor", "ktor-server-content-negotiation").versionRef(ktorVersion)
             library("ktor-server-auth", "io.ktor", "ktor-server-auth").versionRef(ktorVersion)
+            library("ktor-server-cors", "io.ktor", "ktor-server-cors").versionRef(ktorVersion)
+            library("ktor-server-call-logging", "io.ktor", "ktor-server-call-logging").versionRef(ktorVersion)
+            library("ktor-server-openapi", "io.ktor", "ktor-server-openapi").versionRef(ktorVersion)
+            library("ktor-server-swagger", "io.ktor", "ktor-server-swagger").versionRef(ktorVersion)
+
+            val graphqlKotlinVersion = version("graphql", "7.0.+")
+            library("graphql-kotlin-ktor-server", "com.expediagroup", "graphql-kotlin-ktor-server").versionRef(graphqlKotlinVersion)
 
             val jUnitVersion = version("jUnit", "5.9.+")
             library("junit5", "org.junit.jupiter", "junit-jupiter").versionRef(jUnitVersion)

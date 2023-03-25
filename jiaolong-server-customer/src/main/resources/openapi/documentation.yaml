@@ -1,0 +1,36 @@
+openapi: "3.0.3"
+info:
+  title: "jiaolong_0_2 API"
+  description: "jiaolong_0_2 API"
+  version: "1.0.0"
+servers:
+  - url: "http://localhost:8080"
+paths:
+  /healthcheck:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "OK!"
+  /hello:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Hello"
+components:
+  Hoge:
