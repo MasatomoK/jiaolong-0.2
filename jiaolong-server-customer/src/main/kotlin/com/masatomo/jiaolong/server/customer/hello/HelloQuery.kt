@@ -13,7 +13,7 @@ data class Payload(val x: String)
 
 object HelloMutation : Mutation {
 
-    suspend fun hello(hoge: String): Payload {
+    fun hello(hoge: String): Payload {
 
         return Payload(hoge)
     }

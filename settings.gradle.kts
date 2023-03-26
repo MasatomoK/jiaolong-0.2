@@ -42,7 +42,10 @@ dependencyResolutionManagement {
             library("javax-annotation-api", "javax.annotation", "javax.annotation-api").versionRef(javaxVersion)
 
             val slf4jVersion = version("slf4j", "1.7.+")
-            library("slf4j-sample", "org.slf4j", "slf4j-simple").versionRef(slf4jVersion)
+            library("slf4j-simple", "org.slf4j", "slf4j-simple").versionRef(slf4jVersion)
+
+            val logbackVersion = version("logback", "1.4.+")
+            library("logback-classic", "ch.qos.logback", "logback-classic").versionRef(logbackVersion)
 
             val config4kVersion = version("config4k", "0.4.+")
             library("config4k", "io.github.config4k", "config4k").versionRef(config4kVersion)
@@ -96,6 +99,7 @@ dependencyResolutionManagement {
             library("ktor-server-auth", "io.ktor", "ktor-server-auth").versionRef(ktorVersion)
             library("ktor-server-cors", "io.ktor", "ktor-server-cors").versionRef(ktorVersion)
             library("ktor-server-call-logging", "io.ktor", "ktor-server-call-logging").versionRef(ktorVersion)
+            library("ktor-server-call-logging-jvm", "io.ktor", "ktor-server-call-logging-jvm").versionRef(ktorVersion)
             library("ktor-server-openapi", "io.ktor", "ktor-server-openapi").versionRef(ktorVersion)
             library("ktor-server-swagger", "io.ktor", "ktor-server-swagger").versionRef(ktorVersion)
 
