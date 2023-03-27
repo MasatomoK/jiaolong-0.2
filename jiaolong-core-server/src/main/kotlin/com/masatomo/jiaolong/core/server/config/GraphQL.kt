@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.server.customer.application
+package com.masatomo.jiaolong.core.server.config
 
 import com.expediagroup.graphql.server.ktor.DefaultKtorGraphQLContextFactory
 import com.expediagroup.graphql.server.ktor.GraphQL
@@ -7,14 +7,13 @@ import com.expediagroup.graphql.server.ktor.graphQLGetRoute
 import com.expediagroup.graphql.server.ktor.graphQLPostRoute
 import com.expediagroup.graphql.server.ktor.graphQLSDLRoute
 import com.expediagroup.graphql.server.ktor.graphiQLRoute
-import com.masatomo.jiaolong.server.customer.domain.hello.HelloMutation
-import com.masatomo.jiaolong.server.customer.domain.hello.HelloQuery
+import com.masatomo.jiaolong.core.server.definition.ApplicationDefinition
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.routing.routing
 
 
-internal fun Application.graphQL(configure: GraphQLConfiguration.() -> Unit) {
+fun Application.graphQL(configure: GraphQLConfiguration.() -> Unit) {
 
     install(GraphQL) {
         configure()
@@ -28,15 +27,11 @@ internal fun Application.graphQL(configure: GraphQLConfiguration.() -> Unit) {
     }
 }
 
-internal fun GraphQLConfiguration.configure() {
+fun GraphQLConfiguration.configureDefault(definition: ApplicationDefinition) {
     schema {
-        packages = listOf("com.masatomo.jiaolong.server.customer")
-        queries = listOf(
-            HelloQuery
-        )
-        mutations = listOf(
-            HelloMutation
-        )
+        packages = definition.packages
+        queries = definition.queries
+        mutations = definition.mutations
     }
 
     engine {

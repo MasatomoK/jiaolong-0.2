@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.server.customer.application
+package com.masatomo.jiaolong.core.server.config
 
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -8,13 +8,13 @@ import io.ktor.server.request.httpMethod
 import io.ktor.server.request.path
 import org.slf4j.event.Level
 
-internal fun Application.logging(configure: CallLoggingConfig.() -> Unit) {
+fun Application.logging(configure: CallLoggingConfig.() -> Unit) {
     install(CallLogging) {
         configure()
     }
 }
 
-internal fun CallLoggingConfig.configure() {
+fun CallLoggingConfig.configureDefault() {
     level = Level.INFO
     filter { call -> call.request.path().startsWith("/") }
     format { call ->

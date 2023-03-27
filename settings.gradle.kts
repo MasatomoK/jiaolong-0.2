@@ -5,6 +5,7 @@ object Jiaolong {
         const val ksp = "jiaolong-core-ksp"
         const val domain = "jiaolong-core-domain"
         const val repository = "jiaolong-core-repository"
+        const val server = "jiaolong-core-server"
     }
 
     object User {
@@ -25,6 +26,7 @@ object Jiaolong {
 include(Jiaolong.Core.ksp)
 include(Jiaolong.Core.domain)
 include(Jiaolong.Core.repository)
+include(Jiaolong.Core.server)
 include(Jiaolong.User.domain)
 include(Jiaolong.User.repository)
 include(Jiaolong.User.service)

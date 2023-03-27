@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.server.customer.application
+package com.masatomo.jiaolong.core.server.config
 
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -6,14 +6,13 @@ import io.ktor.server.engine.ShutDownUrl
 import io.ktor.server.response.respondText
 import kotlinx.coroutines.runBlocking
 
-
-internal fun Application.shutdown(configure: ShutDownUrl.Config.() -> Unit) {
+fun Application.shutdown(configure: ShutDownUrl.Config.() -> Unit) {
     install(ShutDownUrl.ApplicationCallPlugin) {
         configure()
     }
 }
 
-internal fun ShutDownUrl.Config.configure() {
+fun ShutDownUrl.Config.configureDefault() {
     shutDownUrl = "/shutdown"
     exitCodeSupplier = {
         runBlocking {

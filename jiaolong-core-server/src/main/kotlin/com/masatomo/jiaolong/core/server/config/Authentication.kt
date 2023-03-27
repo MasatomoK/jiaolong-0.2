@@ -1,8 +1,8 @@
-package com.masatomo.jiaolong.server.customer.application
+package com.masatomo.jiaolong.core.server.config
 
 import io.ktor.server.auth.AuthenticationConfig
 
-internal fun AuthenticationConfig.configure() {
+fun AuthenticationConfig.configureDefault() {
     provider {
         authenticate {
         }
