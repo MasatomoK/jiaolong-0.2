@@ -82,7 +82,7 @@ private class BuilderProcessor(
                     file.newline()
                 }
 
-                file.appendText(1, "internal fun build(): ${parent.qualifiedName!!.asString()} {")
+                file.appendText(1, "fun build(): ${parent.qualifiedName!!.asString()} {")
                 file.appendText(2, "return ${parent.qualifiedName!!.asString()}(")
                 file.appendText(3, parameters.joinToString(", ") { "${it.name!!.asString()}!!" })
                 file.appendText(2, ").also{ it.isValid() }")

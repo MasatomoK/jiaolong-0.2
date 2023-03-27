@@ -7,8 +7,8 @@ import com.expediagroup.graphql.server.ktor.graphQLGetRoute
 import com.expediagroup.graphql.server.ktor.graphQLPostRoute
 import com.expediagroup.graphql.server.ktor.graphQLSDLRoute
 import com.expediagroup.graphql.server.ktor.graphiQLRoute
-import com.masatomo.jiaolong.server.customer.hello.HelloMutation
-import com.masatomo.jiaolong.server.customer.hello.HelloQuery
+import com.masatomo.jiaolong.server.customer.domain.hello.HelloMutation
+import com.masatomo.jiaolong.server.customer.domain.hello.HelloQuery
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.routing.routing

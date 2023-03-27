@@ -10,6 +10,7 @@ repositories {
 
 dependencies {
     implementation(pluginLibs.gradle.kotlin)
+    implementation(pluginLibs.gradle.kotlinx.serialization)
     implementation(pluginLibs.gradle.ksp)
     implementation(pluginLibs.gradle.node)
     implementation(pluginLibs.gradle.protobuf)

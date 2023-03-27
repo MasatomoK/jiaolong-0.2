@@ -12,9 +12,10 @@ import kotlin.reflect.full.primaryConstructor
 
 annotation class EntityBuilder
 
-interface DomainEntity<E : DomainEntity<E>> {
+interface DomainEntity<E : DomainEntity<E, I>, I : Id<E>> {
 
-    val id: Id<E>
+    val id: I
+    fun assigned(id: I): E
     fun isValid(): Collection<InvalidDomainEntity> = emptyList()
 
     // Cannot override equals in Kotlin...
@@ -28,7 +29,7 @@ interface DomainEntity<E : DomainEntity<E>> {
         .let { "${this::class.simpleName}(${it})" }
 }
 
-class DomainEntityBuilderSupport<T : DomainEntity<*>> {
+class DomainEntityBuilderSupport<T : DomainEntity<*, *>> {
 
     val convertingMessages = mutableListOf<CannotConvert<*, *>>()
 

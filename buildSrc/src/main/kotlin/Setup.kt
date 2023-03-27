@@ -27,6 +27,7 @@ import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlinx.serialization.gradle.SerializationGradleSubplugin
 
 
 open class SetupBase : Plugin<Project> {
@@ -72,10 +73,12 @@ class SetupJava : SetupBase() {
 class SetupKotlin : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
+            val useSerialization = findProperty("useSerialization") == "true"
             val runKsp = findProperty("runKsp") == "true"
 
             apply<SetupJava>()
             apply<KotlinPluginWrapper>()
+            if (useSerialization) apply<SerializationGradleSubplugin>()
             if (runKsp) apply<KspGradleSubplugin>()
 
             extensions.getByType<KotlinProjectExtension>().apply {

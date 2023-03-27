@@ -5,21 +5,21 @@ import kotlin.reflect.KClass
 
 
 interface InvalidDomainEntity {
-    val kClass: KClass<out DomainEntity<*>>
+    val kClass: KClass<out DomainEntity<*, *>>
 }
 
-data class AnnotatedEntityValidator<E : DomainEntity<E>>(
+data class AnnotatedEntityValidator<E : DomainEntity<E, *>>(
     val annClass: KClass<out Annotation>,
     val validation: Annotation.(E) -> InvalidDomainEntity?
 )
 
 @Suppress("UNCHECKED_CAST")
-fun <A : Annotation, E : DomainEntity<E>> KClass<out A>.toValidator(
+fun <A : Annotation, E : DomainEntity<E, *>> KClass<out A>.toValidator(
     validation: A.(E) -> InvalidDomainEntity?
 ) = AnnotatedEntityValidator<E>(this) { validation.invoke(this as A, it) }
 
 
-fun <E : DomainEntity<E>> E.validateBy(
+fun <E : DomainEntity<E, *>> E.validateBy(
     vararg validators: AnnotatedEntityValidator<E>
 ) = this::class.annotations.mapNotNull { ann ->
     validators.firstOrNull { it.annClass == ann.annotationClass }

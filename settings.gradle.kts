@@ -7,12 +7,14 @@ object Jiaolong {
         const val repository = "jiaolong-core-repository"
     }
 
-    object Price {
-        const val domain = "jiaolong-price-domain"
-    }
-
     object User {
         const val domain = "jiaolong-user-domain"
+        const val repository = "jiaolong-user-repository"
+        const val service = "jiaolong-user-service"
+    }
+
+    object Price {
+        const val domain = "jiaolong-price-domain"
     }
 
     object Server {
@@ -23,8 +25,10 @@ object Jiaolong {
 include(Jiaolong.Core.ksp)
 include(Jiaolong.Core.domain)
 include(Jiaolong.Core.repository)
-include(Jiaolong.Price.domain)
 include(Jiaolong.User.domain)
+include(Jiaolong.User.repository)
+include(Jiaolong.User.service)
+include(Jiaolong.Price.domain)
 include(Jiaolong.Server.customer)
 
 
@@ -34,6 +38,9 @@ dependencyResolutionManagement {
             val kotlinVersion = version("kotlin", "1.8.+")
             library("kotlin-reflect", "org.jetbrains.kotlin", "kotlin-reflect").versionRef(kotlinVersion)
             library("kotlin-testJunit", "org.jetbrains.kotlin", "kotlin-test-junit").versionRef(kotlinVersion)
+
+            val kotlinxVersion = version("kotlinx", "1.5.+")
+            library("kotlinx-serialization-json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").versionRef(kotlinxVersion)
 
             val kspVersion = version("ksp", "1.8.+")
             library("ksp-api", "com.google.devtools.ksp", "symbol-processing-api").versionRef(kspVersion)
@@ -96,6 +103,7 @@ dependencyResolutionManagement {
             library("ktor-server-netty", "io.ktor", "ktor-server-netty").versionRef(ktorVersion)
             library("ktor-server-cio", "io.ktor", "ktor-server-cio").versionRef(ktorVersion)
             library("ktor-server-content-negotiation", "io.ktor", "ktor-server-content-negotiation").versionRef(ktorVersion)
+            library("ktor-serialization-kotlinx-json", "io.ktor", "ktor-serialization-kotlinx-json").versionRef(ktorVersion)
             library("ktor-server-auth", "io.ktor", "ktor-server-auth").versionRef(ktorVersion)
             library("ktor-server-cors", "io.ktor", "ktor-server-cors").versionRef(ktorVersion)
             library("ktor-server-call-logging", "io.ktor", "ktor-server-call-logging").versionRef(ktorVersion)

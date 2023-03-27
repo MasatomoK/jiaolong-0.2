@@ -32,5 +32,17 @@ paths:
               examples:
                 Example#1:
                   value: "Hello"
+  /user/create:
+    post:
+      description: ""
+  /user/get:
+    get:
+      description: ""
+      parameters:
+        - name: "id"
+          in: "query"
+          required: false
+          schema:
+            type: "number"
 components:
   Hoge:

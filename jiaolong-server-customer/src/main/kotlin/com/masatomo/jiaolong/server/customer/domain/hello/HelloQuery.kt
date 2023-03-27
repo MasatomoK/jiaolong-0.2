@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.server.customer.hello
+package com.masatomo.jiaolong.server.customer.domain.hello
 
 import com.expediagroup.graphql.server.operations.Mutation
 import com.expediagroup.graphql.server.operations.Query

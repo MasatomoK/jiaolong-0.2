@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation(lib.bundles.common.kotlin.implementation)
-    implementation(project(Jiaolong.Core.domain))
+    api(project(Jiaolong.Core.domain))
 
     ksp(project(Jiaolong.Core.domain))
 
