@@ -1,13 +1,14 @@
 plugins {
-    setup.kotlin
+    setup.grpc
 }
 
 dependencies {
     implementation(lib.bundles.common.kotlin.implementation)
+    api(lib.bundles.common.proto.implementation)
 
-    implementation(project(Jiaolong.Core.server))
+    runtimeOnly(lib.grpc.netty)
 
-    implementation(project(Jiaolong.User.serviceApi))
+    api(project(Jiaolong.User.domain))
 
     testImplementation(lib.bundles.common.kotlin.testImplementation)
 }

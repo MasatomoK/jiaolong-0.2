@@ -27,7 +27,7 @@ fun Route.configureUser() {
     }
 
     get("/user/get") {
-        call.parameters.get("id")
+        call.parameters["id"]
             ?.toLong()
             ?.let { service.find(IntegralId(it)) }
             ?.let { GetUserResponse(it) }

@@ -5,10 +5,12 @@ plugins {
 dependencies {
     implementation(lib.bundles.common.kotlin.implementation)
 
-    implementation(project(Jiaolong.Core.grpcServer))
+    runtimeOnly(lib.logback.classic)
 
-    api(project(Jiaolong.User.serviceApi))
-    implementation(project(Jiaolong.User.repository))
+    api(lib.ktor.server.core)
+    api(lib.ktor.server.host.common)
+    implementation(lib.grpc.api)
+    runtimeOnly(lib.grpc.netty)
 
     testImplementation(lib.bundles.common.kotlin.testImplementation)
 }

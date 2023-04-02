@@ -4,6 +4,7 @@ import com.expediagroup.graphql.server.operations.Mutation
 import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.routing.Route
 import org.koin.core.module.Module
+import org.koin.dsl.module
 
 
 class ApplicationDefinition(

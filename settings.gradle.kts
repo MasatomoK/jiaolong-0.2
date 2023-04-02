@@ -1,37 +1,17 @@
 rootProject.name = "jiaolong-0.2"
 
-object Jiaolong {
-    object Core {
-        const val ksp = "jiaolong-core-ksp"
-        const val domain = "jiaolong-core-domain"
-        const val repository = "jiaolong-core-repository"
-        const val server = "jiaolong-core-server"
-    }
-
-    object User {
-        const val domain = "jiaolong-user-domain"
-        const val repository = "jiaolong-user-repository"
-        const val service = "jiaolong-user-service"
-    }
-
-    object Price {
-        const val domain = "jiaolong-price-domain"
-    }
-
-    object Server {
-        const val customer = "jiaolong-server-customer"
-    }
-}
-
-include(Jiaolong.Core.ksp)
-include(Jiaolong.Core.domain)
-include(Jiaolong.Core.repository)
-include(Jiaolong.Core.server)
-include(Jiaolong.User.domain)
-include(Jiaolong.User.repository)
-include(Jiaolong.User.service)
-include(Jiaolong.Price.domain)
-include(Jiaolong.Server.customer)
+include("jiaolong-core-ksp")
+include("jiaolong-core-domain")
+include("jiaolong-core-repository")
+include("jiaolong-core-grpc-server")
+include("jiaolong-core-grpc-client")
+include("jiaolong-core-server")
+include("jiaolong-user-domain")
+include("jiaolong-user-repository")
+include("jiaolong-user-service-api")
+include("jiaolong-user-service")
+include("jiaolong-price-domain")
+include("jiaolong-server-customer")
 
 
 dependencyResolutionManagement {

@@ -17,7 +17,8 @@ dependencies {
     api(lib.ktor.server.swagger)
     api(lib.koin.ktor)
     api(lib.graphql.kotlin.ktor.server)
-    api(lib.logback.classic)
+    runtimeOnly(lib.logback.classic)
+    runtimeOnly(lib.kotlinx.serialization.json)
 
     testImplementation(lib.bundles.common.kotlin.testImplementation)
 }

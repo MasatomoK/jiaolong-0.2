@@ -14,7 +14,9 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Delete
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.testing.Test
+import org.gradle.external.javadoc.CoreJavadocOptions
 import org.gradle.jvm.tasks.Jar
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JvmVendorSpec
@@ -61,6 +63,11 @@ class SetupJava : SetupBase() {
 
             tasks.withType<JavaCompile>().configureEach {
                 options.encoding = "UTF-8"
+            }
+
+            tasks.withType<Javadoc>().configureEach {
+                options.encoding = "UTF-8"
+                (options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
             }
 
             tasks.withType<Jar> {
@@ -128,13 +135,13 @@ class SetupGrpc : Plugin<Project> {
             apply<ProtobufPlugin>()
 
             extensions.getByType<ProtobufExtension>().apply {
-                protoc { artifact = notation(Protobuf.protoc) }
+                protoc { artifact = protocArtifact }
 
                 // generatedFilesBaseDir = "$projectDir/src"
 
                 plugins {
-                    id("grpc") { artifact = notation(GRPC.gen) }
-                    id("grpckt") { artifact = notation(GRPC.genKotlin) }
+                    id("grpc") { artifact = grpcJavaGenArtifact }
+                    id("grpckt") { artifact = grpcKotlinGenArtifact }
                 }
 
                 generateProtoTasks {
@@ -144,9 +151,9 @@ class SetupGrpc : Plugin<Project> {
                             id("grpckt") { outputSubDir = "kotlin" }
                         }
                         it.builtins {
+                            id("kotlin")
                             id("python")
                             id("cpp")
-                            id("kotlin")
                         }
                     }
                 }
@@ -158,13 +165,6 @@ class SetupGrpc : Plugin<Project> {
                 kotlinOptions {
                     freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
                 }
-            }
-
-            tasks.getByName<Delete>("clean") {
-                delete("$projectDir/src/main/cpp")
-                delete("$projectDir/src/main/java")
-                delete("$projectDir/src/main/kotlin")
-                delete("$projectDir/src/main/python")
             }
 
             tasks.getByName("processResources").dependsOn("generateProto")

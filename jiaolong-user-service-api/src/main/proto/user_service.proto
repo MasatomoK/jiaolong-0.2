@@ -1,0 +1,27 @@
+syntax = "proto3";
+import "user_model.proto";
+
+package com.masatomo.jiaolong.user.grpc;
+option java_package = "com.masatomo.jiaolong.user.grpc";
+
+
+service UserService{
+  rpc register(RegisterRequest) returns (RegisterResponse) {}
+  rpc find(FindRequest) returns (FindResponse) {}
+}
+
+message RegisterRequest{
+  User user = 1;
+}
+
+message RegisterResponse{
+  int64 id = 1;
+}
+
+message FindRequest{
+  int64 id = 1;
+}
+
+message FindResponse{
+  User user = 1;
+}
