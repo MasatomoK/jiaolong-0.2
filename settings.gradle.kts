@@ -46,6 +46,9 @@ dependencyResolutionManagement {
             library("koin-test", "io.insert-koin", "koin-test").versionRef(koinVersion)
             library("koin-test-junit5", "io.insert-koin", "koin-test-junit5").versionRef(koinVersion)
 
+            val poetVersion = version("kotlinpoet", "1.13.+")
+            library("kotlinpoet-ksp", "com.squareup", "kotlinpoet-ksp").versionRef(poetVersion)
+
             val hikariVersion = version("hikari", "5.0.+")
             library("hikari", "com.zaxxer", "HikariCP").versionRef(hikariVersion)
 

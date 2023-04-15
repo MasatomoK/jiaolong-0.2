@@ -2,9 +2,14 @@ package com.masatomo.jiaolong.core.repository
 
 import com.masatomo.jiaolong.core.common.Id
 import com.masatomo.jiaolong.core.domain.DomainEntity
+import kotlin.reflect.KClass
 
 
-annotation class GenerateRepository(val type: RepositoryType)
+annotation class GenerateRepository(
+    vararg val types: KClass<out RepositoryType>
+)
+
+interface RepositoryType
 
 interface Repository<E : DomainEntity<E, I>, I : Id<E>> {
     fun register(entity: E): I
@@ -15,9 +20,4 @@ interface Repository<E : DomainEntity<E, I>, I : Id<E>> {
     fun update(entity: E)
 
     fun delete(id: I)
-}
-
-enum class RepositoryType {
-    JDBC,
-    MEMORY
 }
