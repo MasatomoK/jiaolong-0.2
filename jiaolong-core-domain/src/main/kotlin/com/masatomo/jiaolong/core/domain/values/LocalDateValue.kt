@@ -1,32 +1,32 @@
-package com.masatomo.jiaolong.core.common
+package com.masatomo.jiaolong.core.domain.values
 
 import com.masatomo.jiaolong.core.domain.InlineDomainValue
 import com.masatomo.jiaolong.core.validation.InvalidDomainValue
 import com.masatomo.jiaolong.core.validation.toValidator
 import com.masatomo.jiaolong.core.validation.validateBy
 import java.time.DayOfWeek
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.reflect.KClass
 import kotlin.reflect.full.primaryConstructor
 
 
-interface LocalDateTimeValue : InlineDomainValue<LocalDateTime> {
+interface LocalDateValue : InlineDomainValue<LocalDate> {
 
     companion object {
-        operator fun invoke(value: LocalDateTime) = Anonymous(value)
+        operator fun invoke(value: LocalDate) = Anonymous(value)
 
         @JvmInline
-        value class Anonymous(override val value: LocalDateTime) : LocalDateTimeValue
+        value class Anonymous(override val value: LocalDate) : LocalDateValue
     }
 
-    override fun isValid() = validateBy(*LocalDateTimeValidations.predefinedValidators)
+    override fun isValid() = validateBy(*LocalDateValidations.predefinedValidators)
 }
 
-inline fun <V : LocalDateTimeValue, reified R : LocalDateTimeValue> V.to(): R = R::class.primaryConstructor!!.call(value)
+inline fun <V : LocalDateValue, reified R : LocalDateValue> V.to(): R = R::class.primaryConstructor!!.call(value)
 
 
-object LocalDateTimeValidations {
+object LocalDateValidations {
 
     val predefinedValidators by lazy {
         arrayOf(
@@ -42,11 +42,13 @@ object LocalDateTimeValidations {
         val pattern: String = "uuuuMMdd"
     )
 
+
     @Target(AnnotationTarget.CLASS)
     annotation class Maximum(
         val maximumAsString: String,
         val pattern: String = "uuuuMMdd"
     )
+
 
     @Target(AnnotationTarget.CLASS)
     annotation class DayOfWeek(
@@ -54,48 +56,47 @@ object LocalDateTimeValidations {
     )
 }
 
-
-private fun <V : LocalDateTimeValue> LocalDateTimeValidations.Minimum.validate(target: V): LessLocalDateTime<V>? {
+private fun <V : LocalDateValue> LocalDateValidations.Minimum.validate(target: V): LessLocalDate<V>? {
     val minimum = parse(minimumAsString, pattern)
     return target.takeIf { target.value < minimum }
-        ?.let { LessLocalDateTime(it::class, it.value, minimum) }
+        ?.let { LessLocalDate(it::class, it.value, minimum) }
 }
 
-data class LessLocalDateTime<V : LocalDateTimeValue>(
+data class LessLocalDate<V : LocalDateValue>(
     override val kClass: KClass<out V>,
-    val actual: LocalDateTime,
-    val limit: LocalDateTime
+    val actual: LocalDate,
+    val limit: LocalDate
 ) : InvalidDomainValue
 
 
-private fun <V : LocalDateTimeValue> LocalDateTimeValidations.Maximum.validate(target: V): MoreLocalDateTime<V>? {
+private fun <V : LocalDateValue> LocalDateValidations.Maximum.validate(target: V): MoreLocalDate<V>? {
     val maximum = parse(maximumAsString, pattern)
     return target.takeIf { maximum < target.value }
-        ?.let { MoreLocalDateTime(it::class, it.value, maximum) }
+        ?.let { MoreLocalDate(it::class, it.value, maximum) }
 }
 
-data class MoreLocalDateTime<V : LocalDateTimeValue>(
+data class MoreLocalDate<V : LocalDateValue>(
     override val kClass: KClass<out V>,
-    val actual: LocalDateTime,
-    val limit: LocalDateTime
+    val actual: LocalDate,
+    val limit: LocalDate
 ) : InvalidDomainValue
 
 
-private fun <V : LocalDateTimeValue> LocalDateTimeValidations.DayOfWeek.validate(target: V): OuterDayOfWeekLocalDateTime<V>? =
+private fun <V : LocalDateValue> LocalDateValidations.DayOfWeek.validate(target: V): OuterDayOfWeek<V>? =
     target.takeIf { !days.contains(target.value.dayOfWeek) }
-        ?.let { OuterDayOfWeekLocalDateTime(it::class, it.value, days.toSet()) }
+        ?.let { OuterDayOfWeek(it::class, it.value, days.toSet()) }
 
-data class OuterDayOfWeekLocalDateTime<V : LocalDateTimeValue>(
+data class OuterDayOfWeek<V : LocalDateValue>(
     override val kClass: KClass<out V>,
-    val actual: LocalDateTime,
+    val actual: LocalDate,
     val targets: Set<DayOfWeek>
 ) : InvalidDomainValue
 
 
 private val formatCache = mutableMapOf<String, DateTimeFormatter>()
-private val dateCache = mutableMapOf<String, LocalDateTime>()
+private val dateCache = mutableMapOf<String, LocalDate>()
 
-private fun parse(from: String, pattern: String): LocalDateTime = dateCache.computeIfAbsent(from) {
+private fun parse(from: String, pattern: String): LocalDate = dateCache.computeIfAbsent(from) {
     formatCache.computeIfAbsent(pattern) { DateTimeFormatter.ofPattern(pattern) }
-        .let { LocalDateTime.parse(from, it) }
+        .let { LocalDate.parse(from, it) }
 }

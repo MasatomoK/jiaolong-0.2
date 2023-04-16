@@ -1,6 +1,6 @@
 package com.masatomo.jiaolong.user.service
 
-import com.masatomo.jiaolong.core.common.IntegralId
+import com.masatomo.jiaolong.core.domain.values.IntegralId
 import com.masatomo.jiaolong.user.domain.User
 import com.masatomo.jiaolong.user.grpc.registerRequest
 import com.masatomo.jiaolong.user.grpc.user

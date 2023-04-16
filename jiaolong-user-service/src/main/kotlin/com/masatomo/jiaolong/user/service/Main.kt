@@ -1,5 +1,6 @@
 package com.masatomo.jiaolong.user.service
 
+import com.masatomo.jiaolong.core.service.grpc.BootStrap
 import com.masatomo.jiaolong.core.service.grpc.GRpc
 import com.masatomo.jiaolong.user.repository.userRepositoryModule
 import io.ktor.server.engine.embeddedServer
@@ -12,6 +13,8 @@ fun main() {
             userRepositoryModule
         )
     }.run {
+        koin.getAll<BootStrap>()
+            .forEach(BootStrap::initialize)
         embeddedServer(
             GRpc,
             port = 50051,

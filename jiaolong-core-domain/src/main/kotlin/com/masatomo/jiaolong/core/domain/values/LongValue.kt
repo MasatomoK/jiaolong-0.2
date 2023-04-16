@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.core.common
+package com.masatomo.jiaolong.core.domain.values
 
 import com.masatomo.jiaolong.core.domain.InlineDomainValue
 import com.masatomo.jiaolong.core.validation.InvalidDomainValue

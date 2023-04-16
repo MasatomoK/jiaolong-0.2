@@ -1,7 +1,7 @@
 package com.masatomo.jiaolong.core.repository
 
-import com.masatomo.jiaolong.core.common.Id
 import com.masatomo.jiaolong.core.domain.DomainEntity
+import com.masatomo.jiaolong.core.domain.values.Id
 
 
 interface Repository<E : DomainEntity<E, I>, I : Id<E>> {

@@ -1,7 +1,7 @@
 package com.masatomo.jiaolong.price.domain
 
-import com.masatomo.jiaolong.core.common.IntegralId
 import com.masatomo.jiaolong.core.domain.DomainEntity
+import com.masatomo.jiaolong.core.domain.values.IntegralId
 
 
 data class Tick(

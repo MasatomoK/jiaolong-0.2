@@ -1,7 +1,7 @@
 package com.masatomo.jiaolong.price.domain
 
-import com.masatomo.jiaolong.core.common.BigDecimalValidations
-import com.masatomo.jiaolong.core.common.BigDecimalValue
+import com.masatomo.jiaolong.core.domain.values.BigDecimalValidations
+import com.masatomo.jiaolong.core.domain.values.BigDecimalValue
 import java.math.BigDecimal
 
 

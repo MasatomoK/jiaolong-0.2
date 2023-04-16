@@ -1,7 +1,7 @@
 package com.masatomo.jiaolong.user.domain
 
-import com.masatomo.jiaolong.core.common.StringValidations
-import com.masatomo.jiaolong.core.common.StringValue
+import com.masatomo.jiaolong.core.domain.values.StringValidations
+import com.masatomo.jiaolong.core.domain.values.StringValue
 
 
 @JvmInline

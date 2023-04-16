@@ -1,8 +1,8 @@
 package com.masatomo.jiaolong.core.domain
 
-import com.masatomo.jiaolong.core.common.Id
-import com.masatomo.jiaolong.core.common.IntValue
-import com.masatomo.jiaolong.core.common.StringValue
+import com.masatomo.jiaolong.core.domain.values.Id
+import com.masatomo.jiaolong.core.domain.values.IntValue
+import com.masatomo.jiaolong.core.domain.values.StringValue
 import com.masatomo.jiaolong.core.validation.InvalidDomainEntity
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty0

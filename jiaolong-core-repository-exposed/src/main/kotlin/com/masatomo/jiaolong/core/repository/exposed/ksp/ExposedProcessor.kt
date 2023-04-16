@@ -12,8 +12,8 @@ import com.google.devtools.ksp.symbol.KSNode
 import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.validate
 import com.google.devtools.ksp.visitor.KSDefaultVisitor
-import com.masatomo.jiaolong.core.common.Id
 import com.masatomo.jiaolong.core.domain.DomainEntity
+import com.masatomo.jiaolong.core.domain.values.Id
 import com.masatomo.jiaolong.core.ksp.ext.typeName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec

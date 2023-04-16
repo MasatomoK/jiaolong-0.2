@@ -1,5 +1,8 @@
 package com.masatomo.jiaolong.core.common
 
+import com.masatomo.jiaolong.core.domain.values.IntValidations
+import com.masatomo.jiaolong.core.domain.values.IntValue
+import com.masatomo.jiaolong.core.domain.values.LessMinimumInt
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 

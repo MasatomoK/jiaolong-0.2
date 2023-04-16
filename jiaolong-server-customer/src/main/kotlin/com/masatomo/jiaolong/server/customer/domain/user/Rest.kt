@@ -1,6 +1,6 @@
 package com.masatomo.jiaolong.server.customer.domain.user
 
-import com.masatomo.jiaolong.core.common.IntegralId
+import com.masatomo.jiaolong.core.domain.values.IntegralId
 import com.masatomo.jiaolong.user.domain.Name
 import com.masatomo.jiaolong.user.domain.Password
 import com.masatomo.jiaolong.user.domain.User

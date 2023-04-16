@@ -1,8 +1,8 @@
 package com.masatomo.jiaolong.user.domain
 
-import com.masatomo.jiaolong.core.common.IntegralId
 import com.masatomo.jiaolong.core.domain.DomainEntity
 import com.masatomo.jiaolong.core.domain.EntityBuilder
+import com.masatomo.jiaolong.core.domain.values.IntegralId
 
 
 @EntityBuilder
