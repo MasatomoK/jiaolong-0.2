@@ -14,9 +14,7 @@ import com.google.devtools.ksp.symbol.KSType
 import com.google.devtools.ksp.validate
 import com.google.devtools.ksp.visitor.KSDefaultVisitor
 import com.masatomo.jiaolong.core.ksp.ext.typeName
-import com.masatomo.jiaolong.core.repository.GenerateRepository
 import com.masatomo.jiaolong.core.repository.Repository
-import com.masatomo.jiaolong.core.repository.RepositoryType
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -31,8 +29,7 @@ import com.squareup.kotlinpoet.ksp.writeTo
 import org.koin.ext.getFullName
 import kotlin.reflect.KClass
 
-
-interface OnMemory : RepositoryType
+annotation class GenerateAbstractOnMemoryRepository
 
 internal class OnMemoryRepositoryProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor = OnMemoryRepositoryProcessor(
@@ -47,7 +44,7 @@ private class OnMemoryRepositoryProcessor(
 ) : SymbolProcessor {
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val (targets, nonTarget) = resolver
-            .getSymbolsWithAnnotation(GenerateRepository::class.getFullName())
+            .getSymbolsWithAnnotation(GenerateAbstractOnMemoryRepository::class.getFullName())
             .partition { it.validate() }
         targets.asSequence()
             .filter { it is KSClassDeclaration }

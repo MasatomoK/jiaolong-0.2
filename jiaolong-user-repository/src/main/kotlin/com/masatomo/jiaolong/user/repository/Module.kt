@@ -4,5 +4,6 @@ import org.koin.dsl.module
 
 
 val userRepositoryModule = module {
-    single<UserRepository> { UserRepositoryImpl() }
+//    single<UserRepository> { UserRepositoryImpl() }
+    single<UserRepository> { ExposedUserRepositoryImpl() }
 }

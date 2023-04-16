@@ -5,6 +5,9 @@ interface Id<E>
 
 @JvmInline
 value class IntegralId<E>(override val value: Long) : LongValue, Id<E> {
+
+    constructor(value: Int) : this(value.toLong())
+
     companion object {
         @Suppress("UNCHECKED_CAST")
         fun <E> unassigned() = UNASSIGNED as IntegralId<E>

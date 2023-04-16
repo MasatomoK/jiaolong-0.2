@@ -15,6 +15,7 @@ object Jiaolong {
         val ksp = project("jiaolong-core-ksp")
         val domain = project("jiaolong-core-domain")
         val repository = project("jiaolong-core-repository")
+        val repositoryExposed = project("jiaolong-core-repository-exposed")
         val grpcServer = project("jiaolong-core-grpc-server")
         val grpcClient = project("jiaolong-core-grpc-client")
         val server = project("jiaolong-core-server")
