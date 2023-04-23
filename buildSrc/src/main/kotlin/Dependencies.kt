@@ -17,15 +17,14 @@ object Jiaolong {
         val repository = project("jiaolong-core-repository")
         val repositoryExposed = project("jiaolong-core-repository-exposed")
         val grpcServer = project("jiaolong-core-grpc-server")
-        val grpcClient = project("jiaolong-core-grpc-client")
         val server = project("jiaolong-core-server")
     }
 
     object User : ProjectGroup("") {
         val domain = project("jiaolong-user-domain")
         val repository = project("jiaolong-user-repository")
-        val serviceApi = project("jiaolong-user-service-api")
         val service = project("jiaolong-user-service")
+        val serviceGrpc = project("jiaolong-user-service-grpc")
     }
 
     object Price : ProjectGroup("") {

@@ -7,6 +7,7 @@ dependencies {
 
     runtimeOnly(lib.logback.classic)
 
+    api(project(Jiaolong.Core.domain))
     api(lib.ktor.server.core)
     api(lib.ktor.server.host.common)
     implementation(lib.grpc.api)

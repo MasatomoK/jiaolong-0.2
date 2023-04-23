@@ -5,9 +5,7 @@ plugins {
 dependencies {
     implementation(lib.bundles.common.kotlin.implementation)
 
-    implementation(project(Jiaolong.Core.grpcServer))
-
-    api(project(Jiaolong.User.serviceApi))
+    api(project(Jiaolong.User.domain))
     implementation(project(Jiaolong.User.repository))
 
     testImplementation(lib.bundles.common.kotlin.testImplementation)
