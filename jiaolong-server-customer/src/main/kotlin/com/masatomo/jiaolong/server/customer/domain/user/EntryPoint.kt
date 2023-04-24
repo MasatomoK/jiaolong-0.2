@@ -1,6 +1,7 @@
 package com.masatomo.jiaolong.server.customer.domain.user
 
 import com.masatomo.jiaolong.core.server.definition.entryPoint
+import com.masatomo.jiaolong.core.server.modulesIn
 import io.ktor.server.routing.Route
 
 

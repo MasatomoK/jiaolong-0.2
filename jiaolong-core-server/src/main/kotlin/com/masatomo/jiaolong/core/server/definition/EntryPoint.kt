@@ -5,7 +5,6 @@ import com.expediagroup.graphql.server.operations.Query
 import io.ktor.server.routing.Route
 import org.koin.core.module.Module
 import org.koin.dsl.module
-import kotlin.reflect.jvm.kotlinProperty
 
 
 class ApplicationDefinition(
@@ -39,14 +38,6 @@ class EntryPoint(
     fun module(config: Module.() -> Unit) {
         module.config()
     }
-
-    fun modulesIn(baseClass: String): Array<Module> = Class.forName(baseClass)
-        .declaredFields
-        .mapNotNull { it.kotlinProperty }
-        .map { it.getter }
-        .map { it.call() }
-        .filterIsInstance<Module>()
-        .toTypedArray()
 
     fun graphQL(config: GraphQLDefinition.() -> Unit) {
         graphQLDef.config()
