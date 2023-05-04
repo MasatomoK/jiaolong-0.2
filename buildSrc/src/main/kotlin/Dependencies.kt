@@ -17,8 +17,7 @@ object Jiaolong {
         val application = project("jiaolong-core-application")
         val config = project("jiaolong-core-config")
         val repository = project("jiaolong-core-repository")
-        val repositoryExposed = project("jiaolong-core-repository-exposed")
-        val database = project("jiaolong-core-database")
+        val rdb = project("jiaolong-core-rdb")
         val grpcServer = project("jiaolong-core-grpc-server")
     }
 

@@ -13,8 +13,8 @@ fun main() {
             modules(
                 userServiceModule,
                 userRepositoryModule,
-                *modulesIn("com.masatomo.jiaolong.core.config.impl.ModuleKt"),
-                *modulesIn("com.masatomo.jiaolong.core.database.impl.ModuleKt"),
+                *modulesIn("com.masatomo.jiaolong.core.config.ModuleKt"),
+                *modulesIn("com.masatomo.jiaolong.core.rdb.ModuleKt"),
                 *modulesIn("com.masatomo.jiaolong.core.repository.exposed.ModuleKt"),
             )
         }

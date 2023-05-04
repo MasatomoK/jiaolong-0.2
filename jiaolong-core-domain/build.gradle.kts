@@ -4,7 +4,8 @@ plugins {
 
 dependencies {
     implementation(lib.bundles.common.kotlin.implementation)
-    implementation(lib.ksp.api)
+
+    implementation(project(Jiaolong.Core.ksp))
 
     testImplementation(lib.bundles.common.kotlin.testImplementation)
 }

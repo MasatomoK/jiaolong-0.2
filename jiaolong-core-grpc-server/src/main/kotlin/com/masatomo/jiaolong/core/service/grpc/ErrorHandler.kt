@@ -1,6 +1,6 @@
 package com.masatomo.jiaolong.core.service.grpc
 
-import com.masatomo.jiaolong.core.logging.getLogger
+import com.masatomo.jiaolong.core.server.logging.getLogger
 import io.grpc.Status
 import io.grpc.StatusException
 
