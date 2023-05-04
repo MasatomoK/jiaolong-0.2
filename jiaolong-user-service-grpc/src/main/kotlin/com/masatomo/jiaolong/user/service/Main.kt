@@ -1,6 +1,7 @@
 package com.masatomo.jiaolong.user.service
 
 import com.masatomo.jiaolong.core.server.jiaolongApplication
+import com.masatomo.jiaolong.core.server.modulesIn
 import com.masatomo.jiaolong.core.service.grpc.GRpc
 import com.masatomo.jiaolong.user.repository.userRepositoryModule
 import com.masatomo.jiaolong.user.service.grpc.UserServiceServer
@@ -12,6 +13,9 @@ fun main() {
             modules(
                 userServiceModule,
                 userRepositoryModule,
+                *modulesIn("com.masatomo.jiaolong.core.config.impl.ModuleKt"),
+                *modulesIn("com.masatomo.jiaolong.core.database.impl.ModuleKt"),
+                *modulesIn("com.masatomo.jiaolong.core.repository.exposed.ModuleKt"),
             )
         }
         ktor {

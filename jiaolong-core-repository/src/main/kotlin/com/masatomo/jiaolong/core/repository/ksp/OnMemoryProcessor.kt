@@ -24,6 +24,7 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.plusParameter
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
 import org.koin.ext.getFullName
@@ -122,7 +123,7 @@ private class OnMemoryRepositoryProcessor(
                         ?.also { entities[it] = entity.assigned(it) }
                         ?: entity.id
                 """.trimIndent(),
-                        function.returnType!!.resolve().starProjection().toTypeName(),
+                        function.returnType!!.resolve().toClassName(),
                         function.returnType!!.toTypeName(),
                     )
                 )

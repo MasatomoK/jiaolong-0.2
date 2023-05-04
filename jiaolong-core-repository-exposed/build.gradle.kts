@@ -13,6 +13,7 @@ dependencies {
     api(project(Jiaolong.Core.repository))
     api(lib.exposed.core)
     implementation(lib.exposed.jdbc)
+    implementation(project(Jiaolong.Core.database))
 
     testImplementation(lib.bundles.common.kotlin.testImplementation)
 }
