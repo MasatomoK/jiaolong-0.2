@@ -1,7 +1,7 @@
 dependencyResolutionManagement {
     versionCatalogs {
         create("pluginLibs") {
-            val kotlinVersion = version("kotlin", "1.8.10")
+            val kotlinVersion = version("kotlin", "1.8.20")
             library("gradle-kotlin", "org.jetbrains.kotlin", "kotlin-gradle-plugin").versionRef(kotlinVersion)
             library(
                 "gradle-kotlinx-serialization",
@@ -9,7 +9,7 @@ dependencyResolutionManagement {
                 "org.jetbrains.kotlin.plugin.serialization.gradle.plugin"
             ).versionRef(kotlinVersion)
 
-            val kspVersion = version("ksp", "1.8.10-+")
+            val kspVersion = version("ksp", "1.8.20-+")
             library("gradle-ksp", "com.google.devtools.ksp", "com.google.devtools.ksp.gradle.plugin").versionRef(kspVersion)
 
             val nodePluginVersion = version("node", "3.5.+")

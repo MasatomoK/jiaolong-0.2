@@ -14,10 +14,12 @@ object Jiaolong {
     object Core : ProjectGroup("") {
         val ksp = project("jiaolong-core-ksp")
         val domain = project("jiaolong-core-domain")
+        val application = project("jiaolong-core-application")
+        val config = project("jiaolong-core-config")
         val repository = project("jiaolong-core-repository")
         val repositoryExposed = project("jiaolong-core-repository-exposed")
+        val database = project("jiaolong-core-database")
         val grpcServer = project("jiaolong-core-grpc-server")
-        val server = project("jiaolong-core-server")
     }
 
     object User : ProjectGroup("") {

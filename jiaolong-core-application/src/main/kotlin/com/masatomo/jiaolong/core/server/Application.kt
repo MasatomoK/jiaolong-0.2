@@ -7,10 +7,17 @@ import org.koin.core.module.Module
 import org.koin.dsl.koinApplication
 import kotlin.reflect.jvm.kotlinProperty
 
+
 class JiaolongApplication internal constructor() {
 
     private var koinDeclaration: KoinApplication.() -> Unit = {}
     private var ktorDeclaration: Koin.() -> ApplicationEngine = { throw RuntimeException() }
+
+    internal val koinApplication by lazy {
+        koinApplication {
+            koinDeclaration.invoke(this)
+        }
+    }
 
     fun koin(koinDeclaration: KoinApplication.() -> Unit) {
         this.koinDeclaration = koinDeclaration
@@ -20,19 +27,22 @@ class JiaolongApplication internal constructor() {
         this.ktorDeclaration = ktorDeclaration
     }
 
-    fun start() {
-        koinApplication {
-            koinDeclaration.invoke(this)
-        }.run {
-//            koin.getAll<BootStrapAction>()
-//                .forEach(BootStrapAction::initialize)
+    internal fun start() {
+        koinApplication.run {
             ktorDeclaration.invoke(koin)
         }.start(wait = true)
     }
+
+    internal fun stop() {
+        // TODO
+    }
 }
 
-fun jiaolongApplication(block: JiaolongApplication.() -> Unit): JiaolongApplication =
-    JiaolongApplication().also(block)
+fun jiaolongApplication(block: JiaolongApplication.() -> Unit) =
+    JiaolongApplication()
+        .also(block)
+        .let { JiaolongContext(it) }
+        .also { globalContext = it }
 
 fun modulesIn(baseClass: String): Array<Module> = Class.forName(baseClass)
     .declaredFields
