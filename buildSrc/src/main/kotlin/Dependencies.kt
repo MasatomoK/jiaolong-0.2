@@ -19,6 +19,7 @@ object Jiaolong {
         val repository = project("jiaolong-core-repository")
         val rdb = project("jiaolong-core-rdb")
         val grpcServer = project("jiaolong-core-grpc-server")
+        val system = project("jiaolong-core-system")
     }
 
     object User : ProjectGroup("") {
