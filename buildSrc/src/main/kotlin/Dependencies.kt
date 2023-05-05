@@ -22,6 +22,11 @@ object Jiaolong {
         val system = project("jiaolong-core-system")
     }
 
+    object Admin : ProjectGroup("") {
+        val service = project("jiaolong-admin-service")
+        val server = project("jiaolong-admin-server")
+    }
+
     object User : ProjectGroup("") {
         val domain = project("jiaolong-user-domain")
         val repository = project("jiaolong-user-repository")
@@ -33,8 +38,8 @@ object Jiaolong {
         val domain = project("jiaolong-price-domain")
     }
 
-    object Server : ProjectGroup("") {
-        val customer = project("jiaolong-server-customer")
+    object Customer : ProjectGroup("") {
+        val server = project("jiaolong-customer-server")
     }
 }
 

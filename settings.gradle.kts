@@ -8,12 +8,14 @@ include("jiaolong-core-repository")
 include("jiaolong-core-rdb")
 include("jiaolong-core-grpc-server")
 include("jiaolong-core-system")
+include("jiaolong-admin-service")
+include("jiaolong-admin-server")
 include("jiaolong-user-domain")
 include("jiaolong-user-repository")
 include("jiaolong-user-service")
 include("jiaolong-user-service-grpc")
 include("jiaolong-price-domain")
-include("jiaolong-server-customer")
+include("jiaolong-customer-server")
 
 
 dependencyResolutionManagement {

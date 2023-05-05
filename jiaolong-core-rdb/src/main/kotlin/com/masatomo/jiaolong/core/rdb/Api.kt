@@ -9,7 +9,7 @@ import javax.sql.DataSource
 
 val databaseRootConfigPath = ConfigPath.of("jiaolong", "core", "database")
 val dbDefinitionConfigPath = databaseRootConfigPath / "definitions"
-val dbMigrationConfigPath = databaseRootConfigPath / "migration"
+val dbMigrationConfigPath = databaseRootConfigPath / "migrator"
 val dbDataSourceConfigPath = databaseRootConfigPath / "datasource"
 
 
