@@ -15,7 +15,7 @@ include("jiaolong-user-repository")
 include("jiaolong-user-service")
 include("jiaolong-user-service-grpc")
 include("jiaolong-price-domain")
-include("jiaolong-customer-server")
+include("jiaolong-first-server")
 
 
 dependencyResolutionManagement {

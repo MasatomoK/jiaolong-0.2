@@ -1,7 +1,7 @@
-package com.masatomo.jiaolong.server.customer
+package com.masatomo.jiaolong.first.server
 
 import com.masatomo.jiaolong.core.server.jiaolongApplication
-import com.masatomo.jiaolong.server.customer.application.module
+import com.masatomo.jiaolong.first.server.application.module
 import io.ktor.server.application.Application
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer

@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.server.customer.domain.hello
+package com.masatomo.jiaolong.first.server.domain.hello
 
 import com.masatomo.jiaolong.core.server.definition.entryPoint
 import io.ktor.server.routing.Route

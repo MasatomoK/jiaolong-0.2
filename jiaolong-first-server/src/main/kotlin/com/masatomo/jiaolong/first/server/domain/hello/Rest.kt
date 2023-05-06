@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.server.customer.domain.hello
+package com.masatomo.jiaolong.first.server.domain.hello
 
 import io.ktor.server.application.call
 import io.ktor.server.response.respondText

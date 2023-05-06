@@ -1,4 +1,4 @@
-package com.masatomo.jiaolong.server.customer.domain.user
+package com.masatomo.jiaolong.first.server.domain.user
 
 import com.masatomo.jiaolong.core.server.definition.entryPoint
 import com.masatomo.jiaolong.core.server.modulesIn
