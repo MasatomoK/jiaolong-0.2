@@ -74,6 +74,8 @@ dependencyResolutionManagement {
             library("sqlite-jdbc", "org.xerial", "sqlite-jdbc").versionRef(sqliteVersion)
             val mysqlVersion = version("mysql", "8.0.+")
             library("mysql-jdbc", "mysql", "mysql-connector-java").versionRef(mysqlVersion)
+            val postgresVersion = version("postgres", "42.5.+")
+            library("postgres-jdbc", "org.postgresql", "postgresql").versionRef(postgresVersion)
 
             // ProtocolBuffer, GRPC
             val protobufVersion = version("protobuf", "3.19.+")

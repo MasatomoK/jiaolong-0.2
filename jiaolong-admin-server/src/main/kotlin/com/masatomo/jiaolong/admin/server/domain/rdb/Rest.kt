@@ -19,12 +19,12 @@ fun Route.configureRdb() {
     route("/rdb") {
         post<InitializeRdbRequest>("/initialize") {
             service.initialize(it.toDomain())
-            call.respondNullable<Any?>(HttpStatusCode.OK, null)
+            call.respondNullable<Unit?>(HttpStatusCode.OK, null)
         }
 
         post<MigrateRdbRequest>("/migrate") {
             service.migrate(it.toDomain())
-            call.respondNullable<Any?>(HttpStatusCode.OK, null)
+            call.respondNullable<Unit?>(HttpStatusCode.OK, null)
         }
     }
 }

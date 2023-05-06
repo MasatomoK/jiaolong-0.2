@@ -1,6 +1,6 @@
-create table user
+create table "user"
 (
-    ID       integer primary key autoincrement,
+    ID       serial primary key,
     name     varchar(100) not null,
     password varchar(100) not null
 )
