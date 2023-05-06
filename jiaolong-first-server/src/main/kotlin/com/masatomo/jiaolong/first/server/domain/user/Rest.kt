@@ -1,11 +1,11 @@
 package com.masatomo.jiaolong.first.server.domain.user
 
 import com.masatomo.jiaolong.core.domain.values.IntegralId
-import com.masatomo.jiaolong.user.domain.Name
-import com.masatomo.jiaolong.user.domain.Password
-import com.masatomo.jiaolong.user.domain.User
-import com.masatomo.jiaolong.user.domain.UserBuilder
-import com.masatomo.jiaolong.user.service.UserService
+import com.masatomo.jiaolong.sample.domain.Name
+import com.masatomo.jiaolong.sample.domain.Password
+import com.masatomo.jiaolong.sample.domain.User
+import com.masatomo.jiaolong.sample.domain.UserBuilder
+import com.masatomo.jiaolong.sample.service.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.response.respond

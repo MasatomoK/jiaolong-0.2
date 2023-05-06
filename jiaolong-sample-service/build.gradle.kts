@@ -5,10 +5,8 @@ plugins {
 dependencies {
     implementation(lib.bundles.common.kotlin.implementation)
 
-    implementation(project(Jiaolong.Core.application))
-
-    implementation(project(Jiaolong.Sample.service))
-    runtimeOnly(project(Jiaolong.Sample.serviceGrpc))
+    api(project(Jiaolong.Sample.domain))
+    implementation(project(Jiaolong.Sample.repository))
 
     testImplementation(lib.bundles.common.kotlin.testImplementation)
 }

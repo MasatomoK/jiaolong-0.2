@@ -8,7 +8,7 @@ import io.ktor.server.routing.Route
 internal val userEntryPoint = entryPoint {
     module {
         includes(
-            *modulesIn("com.masatomo.jiaolong.user.service.grpc.ModuleKt")
+            *modulesIn("com.masatomo.jiaolong.sample.service.grpc.ModuleKt")
         )
     }
     graphQL {

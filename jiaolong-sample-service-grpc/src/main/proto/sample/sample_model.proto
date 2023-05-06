@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package com.masatomo.jiaolong.sample.grpc;
+option java_package = "com.masatomo.jiaolong.sample.grpc";
+
+
+message User{
+  int64 id = 1;
+  string name = 2;
+  string password = 3;
+}

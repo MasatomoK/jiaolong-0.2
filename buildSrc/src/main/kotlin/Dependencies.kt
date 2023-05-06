@@ -27,11 +27,11 @@ object Jiaolong {
         val server = project("jiaolong-admin-server")
     }
 
-    object User : ProjectGroup("") {
-        val domain = project("jiaolong-user-domain")
-        val repository = project("jiaolong-user-repository")
-        val service = project("jiaolong-user-service")
-        val serviceGrpc = project("jiaolong-user-service-grpc")
+    object Sample : ProjectGroup("") {
+        val domain = project("jiaolong-sample-domain")
+        val repository = project("jiaolong-sample-repository")
+        val service = project("jiaolong-sample-service")
+        val serviceGrpc = project("jiaolong-sample-service-grpc")
     }
 
     object Price : ProjectGroup("") {

@@ -7,7 +7,7 @@ import io.ktor.server.routing.Route
 internal val helloEntryPoint = entryPoint {
     module { }
     graphQL {
-        `package`("com.masatomo.jiaolong.server.customer.domain.hello")
+        `package`("com.masatomo.jiaolong.first.server.domain.hello")
         query(HelloQuery)
         mutation(HelloMutation)
     }
