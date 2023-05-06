@@ -14,7 +14,7 @@ include("jiaolong-sample-domain")
 include("jiaolong-sample-repository")
 include("jiaolong-sample-service")
 include("jiaolong-sample-service-grpc")
-include("jiaolong-price-domain")
+//include("jiaolong-price-domain")
 include("jiaolong-first-server")
 
 
