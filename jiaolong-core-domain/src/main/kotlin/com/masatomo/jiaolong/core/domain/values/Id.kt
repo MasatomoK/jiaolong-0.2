@@ -3,23 +3,23 @@ package com.masatomo.jiaolong.core.domain.values
 
 interface Id<E>
 
-@JvmInline
-value class IntegralId<E>(override val value: Long) : LongValue, Id<E> {
-
-    constructor(value: Int) : this(value.toLong())
+interface IntegralId<E> : LongValue, Id<E> {
 
     companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun <E> unassigned() = UNASSIGNED as IntegralId<E>
-        val UNASSIGNED = IntegralId<Nothing>(Long.MIN_VALUE)
+        operator fun <E> invoke(value: Long): IntegralId<E> = Anonymous(value)
     }
+
+    @JvmInline
+    value class Anonymous<E>(override val value: Long) : IntegralId<E>
 }
 
-@JvmInline
-value class StringId<E>(override val value: String) : StringValue, Id<E> {
+interface StringId<E> : StringValue, Id<E> {
     companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun <E> unassigned() = UNASSIGNED as StringId<E>
-        val UNASSIGNED = StringId<Nothing>("*".repeat(100))
+        operator fun <E> invoke(value: String): StringId<E> = Anonymous(value)
     }
+
+    @JvmInline
+    value class Anonymous<E>(override val value: String) : StringId<E>
 }
+
+typealias Code<E> = StringId<E>

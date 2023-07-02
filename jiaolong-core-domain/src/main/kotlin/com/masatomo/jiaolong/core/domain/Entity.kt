@@ -4,6 +4,7 @@ import com.masatomo.jiaolong.core.domain.values.Id
 import com.masatomo.jiaolong.core.domain.values.IntValue
 import com.masatomo.jiaolong.core.domain.values.StringValue
 import com.masatomo.jiaolong.core.validation.InvalidDomainEntity
+import java.io.Serializable
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.full.memberProperties
@@ -12,7 +13,7 @@ import kotlin.reflect.full.primaryConstructor
 
 annotation class EntityBuilder
 
-interface DomainEntity<E : DomainEntity<E, I>, I : Id<E>> {
+interface DomainEntity<E : DomainEntity<E, I>, I : Id<E>> : Serializable {
 
     val id: I
     fun assigned(id: I): E

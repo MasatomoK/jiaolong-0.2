@@ -1,10 +1,8 @@
 package com.masatomo.jiaolong.core.domain
 
-import com.masatomo.jiaolong.core.validation.InvalidDomainValue
+import java.io.Serializable
 
-interface DomainValue {
-    fun isValid(): Collection<InvalidDomainValue>
-}
+interface DomainValue : Serializable
 
 interface InlineDomainValue<out T> : DomainValue {
     val value: T
