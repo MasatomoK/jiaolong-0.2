@@ -12,7 +12,7 @@ dependencies {
     implementation(project(Jiaolong.Core.grpcServer))
 
     runtimeOnly(project(Jiaolong.Core.rdb))
-    runtimeOnly(lib.sqlite.jdbc)
+    runtimeOnly(lib.postgres.jdbc)
 
     implementation(project(Jiaolong.Sample.repository))
     implementation(project(Jiaolong.Sample.service))

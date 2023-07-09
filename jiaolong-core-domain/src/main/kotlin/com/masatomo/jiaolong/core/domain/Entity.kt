@@ -3,7 +3,6 @@ package com.masatomo.jiaolong.core.domain
 import com.masatomo.jiaolong.core.domain.values.Id
 import com.masatomo.jiaolong.core.domain.values.IntValue
 import com.masatomo.jiaolong.core.domain.values.StringValue
-import com.masatomo.jiaolong.core.validation.InvalidDomainEntity
 import java.io.Serializable
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty0
@@ -17,7 +16,6 @@ interface DomainEntity<E : DomainEntity<E, I>, I : Id<E>> : Serializable {
 
     val id: I
     fun assigned(id: I): E
-    fun isValid(): Collection<InvalidDomainEntity> = emptyList()
 
     // Cannot override equals in Kotlin...
     // https://stackoverflow.com/questions/53771394/override-and-implement-fn-from-class-in-interface

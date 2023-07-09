@@ -1,13 +1,12 @@
 package com.masatomo.jiaolong.sample.service
 
-import com.masatomo.jiaolong.core.domain.values.IntegralId
 import com.masatomo.jiaolong.core.domain.values.StringId
 import com.masatomo.jiaolong.core.repository.TransactionScope
 import com.masatomo.jiaolong.sample.domain.User
 
 interface UserService {
-    suspend fun register(user: User): IntegralId<User>
-    suspend fun find(id: IntegralId<User>): User?
+    suspend fun register(user: User): User.Id
+    suspend fun find(id: User.Id): User?
 }
 
 object UserTransactionScope : TransactionScope {

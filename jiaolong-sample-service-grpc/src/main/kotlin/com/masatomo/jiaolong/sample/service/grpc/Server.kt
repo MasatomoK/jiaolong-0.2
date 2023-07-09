@@ -16,7 +16,7 @@ internal class UserServiceServer(
 ) : UserServiceGrpcKt.UserServiceCoroutineImplBase(coroutineContext) {
     override suspend fun register(request: SampleService.RegisterRequest) = globalErrorHandler {
         suspendTransaction(UserTransactionScope) {
-            delegation.register(request.toUser())
+            delegation.register(request.toUserId())
                 .let { registerResponseFrom(it) }
         }
     }

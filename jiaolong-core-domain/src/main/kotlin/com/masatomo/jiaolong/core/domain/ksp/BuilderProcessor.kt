@@ -1,18 +1,7 @@
 package com.masatomo.jiaolong.core.domain.ksp
 
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
-import com.google.devtools.ksp.processing.SymbolProcessorProvider
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSValueParameter
-import com.google.devtools.ksp.symbol.KSVisitorVoid
-import com.google.devtools.ksp.symbol.Nullability
+import com.google.devtools.ksp.processing.*
+import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
 import com.masatomo.jiaolong.core.domain.EntityBuilder
 import org.koin.ext.getFullName
@@ -85,7 +74,7 @@ private class BuilderProcessor(
                 file.appendText(1, "fun build(): ${parent.qualifiedName!!.asString()} {")
                 file.appendText(2, "return ${parent.qualifiedName!!.asString()}(")
                 file.appendText(3, parameters.joinToString(", ") { "${it.name!!.asString()}!!" })
-                file.appendText(2, ").also{ it.isValid() }")
+                file.appendText(2, ")")
                 file.appendText(1, "}")
                 file.newline()
 

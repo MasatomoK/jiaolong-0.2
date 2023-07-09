@@ -1,29 +1,13 @@
 package com.masatomo.jiaolong.core.repository.ksp
 
-import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
-import com.google.devtools.ksp.processing.SymbolProcessorProvider
-import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSNode
-import com.google.devtools.ksp.symbol.KSType
+import com.google.devtools.ksp.processing.*
+import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
 import com.google.devtools.ksp.visitor.KSDefaultVisitor
 import com.masatomo.jiaolong.core.ksp.ext.typeName
 import com.masatomo.jiaolong.core.repository.Repository
-import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.MUTABLE_MAP
+import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.plusParameter
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeName
-import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
@@ -118,7 +102,7 @@ private class OnMemoryRepositoryProcessor(
                 addCode(
                     CodeBlock.of(
                         """
-                    return takeIf { entity.id == %T.UNASSIGNED }
+                    return takeIf { entity.id == %T.DEFAULT }
                         ?.let { %T(entities.size.toLong()) }
                         ?.also { entities[it] = entity.assigned(it) }
                         ?: entity.id
