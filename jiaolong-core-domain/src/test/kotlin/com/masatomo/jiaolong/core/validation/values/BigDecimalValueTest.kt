@@ -129,7 +129,7 @@ class BigDecimalValueTest : FunSpec({
 
 private class PositiveBigDecimalValueTestee(override val value: BigDecimal) : BigDecimalValue {
     init {
-        validate(this) {
+        validate {
             positive()
         }
     }
@@ -137,7 +137,7 @@ private class PositiveBigDecimalValueTestee(override val value: BigDecimal) : Bi
 
 private class NegativeBigDecimalValueTestee(override val value: BigDecimal) : BigDecimalValue {
     init {
-        validate(this) {
+        validate {
             negative()
         }
     }
@@ -145,7 +145,7 @@ private class NegativeBigDecimalValueTestee(override val value: BigDecimal) : Bi
 
 private class MinimumIncludeBigDecimalValueTestee(override val value: BigDecimal) : BigDecimalValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(BigDecimal(15), true)
         }
     }
@@ -153,7 +153,7 @@ private class MinimumIncludeBigDecimalValueTestee(override val value: BigDecimal
 
 private class MinimumExcludeBigDecimalValueTestee(override val value: BigDecimal) : BigDecimalValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(BigDecimal(15), false)
         }
     }
@@ -161,7 +161,7 @@ private class MinimumExcludeBigDecimalValueTestee(override val value: BigDecimal
 
 private class MaximumIncludeBigDecimalValueTestee(override val value: BigDecimal) : BigDecimalValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(BigDecimal(15), true)
         }
     }
@@ -169,7 +169,7 @@ private class MaximumIncludeBigDecimalValueTestee(override val value: BigDecimal
 
 private class MaximumExcludeBigDecimalValueTestee(override val value: BigDecimal) : BigDecimalValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(BigDecimal(15), false)
         }
     }

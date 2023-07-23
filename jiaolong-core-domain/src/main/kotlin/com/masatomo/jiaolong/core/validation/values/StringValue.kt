@@ -5,6 +5,15 @@ import com.masatomo.jiaolong.core.validation.InvalidDomainValue
 import com.masatomo.jiaolong.core.validation.ValidationContext
 import kotlin.reflect.KClass
 
+object NameConstraint {
+    annotation class MaxLength(val limit: Int)
+    annotation class MinLength(val limit: Int)
+}
+
+object CodeConstraint {
+    annotation class MaxLength(val limit: Int)
+    annotation class MinLength(val limit: Int)
+}
 
 fun <V : StringValue> ValidationContext<V>.minimumLength(limit: Int) = target.takeIf {
     it.value.length < limit

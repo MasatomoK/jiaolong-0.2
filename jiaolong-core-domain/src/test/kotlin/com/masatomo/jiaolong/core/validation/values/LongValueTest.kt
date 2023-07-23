@@ -173,7 +173,7 @@ class LongValueTest : FunSpec({
 
 private class PositiveLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             positive()
         }
     }
@@ -181,7 +181,7 @@ private class PositiveLongValueTestee(override val value: Long) : LongValue {
 
 private class NegativeLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             negative()
         }
     }
@@ -189,7 +189,7 @@ private class NegativeLongValueTestee(override val value: Long) : LongValue {
 
 private class MinimumIncludeLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(15, true)
         }
     }
@@ -197,7 +197,7 @@ private class MinimumIncludeLongValueTestee(override val value: Long) : LongValu
 
 private class MinimumExcludeLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(15, false)
         }
     }
@@ -205,7 +205,7 @@ private class MinimumExcludeLongValueTestee(override val value: Long) : LongValu
 
 private class MaximumIncludeLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(15, true)
         }
     }
@@ -213,7 +213,7 @@ private class MaximumIncludeLongValueTestee(override val value: Long) : LongValu
 
 private class MaximumExcludeLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(15, false)
         }
     }
@@ -221,7 +221,7 @@ private class MaximumExcludeLongValueTestee(override val value: Long) : LongValu
 
 private class EvenLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             even()
         }
     }
@@ -229,7 +229,7 @@ private class EvenLongValueTestee(override val value: Long) : LongValue {
 
 private class OddLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             odd()
         }
     }
@@ -237,7 +237,7 @@ private class OddLongValueTestee(override val value: Long) : LongValue {
 
 private class EvenAndMinimumLongValueTestee(override val value: Long) : LongValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(0, true)
             even()
         }

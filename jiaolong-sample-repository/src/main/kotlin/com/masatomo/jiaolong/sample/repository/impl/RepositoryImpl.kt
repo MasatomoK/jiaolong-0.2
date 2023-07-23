@@ -1,6 +1,7 @@
 package com.masatomo.jiaolong.sample.repository.impl
 
 import com.masatomo.jiaolong.core.domain.values.IntegralId
+import com.masatomo.jiaolong.core.domain.values.Name
 import com.masatomo.jiaolong.core.repository.exposed.ksp.GenerateExposedTable
 import com.masatomo.jiaolong.core.repository.exposed.ksp.TableSeed
 import com.masatomo.jiaolong.sample.domain.User
@@ -45,7 +46,7 @@ internal object UserTable : LongIdTable() {
 
     fun ResultRow.toUser() = User(
         User.Id(this[id].value),
-        User.Name(this[name]),
+        Name(this[name]),
         User.Password(this[password]),
     )
 

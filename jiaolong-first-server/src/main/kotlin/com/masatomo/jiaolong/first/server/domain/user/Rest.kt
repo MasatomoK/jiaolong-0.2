@@ -1,5 +1,6 @@
 package com.masatomo.jiaolong.first.server.domain.user
 
+import com.masatomo.jiaolong.core.domain.values.Name
 import com.masatomo.jiaolong.sample.domain.User
 import com.masatomo.jiaolong.sample.domain.UserBuilder
 import com.masatomo.jiaolong.sample.service.UserService
@@ -37,7 +38,7 @@ data class CreateUserRequest(
 ) {
     fun toDomain(): User = UserBuilder()
         .withId(User.Id.DEFAULT)
-        .withName(User.Name(name))
+        .withName(Name(name))
         .withPassword(User.Password(password))
         .build()
 }

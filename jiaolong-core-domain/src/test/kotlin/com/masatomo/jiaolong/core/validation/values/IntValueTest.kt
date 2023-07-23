@@ -173,7 +173,7 @@ class IntValueTest : FunSpec({
 
 private class PositiveIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             positive()
         }
     }
@@ -181,7 +181,7 @@ private class PositiveIntValueTestee(override val value: Int) : IntValue {
 
 private class NegativeIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             negative()
         }
     }
@@ -189,7 +189,7 @@ private class NegativeIntValueTestee(override val value: Int) : IntValue {
 
 private class MinimumIncludeIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(15, true)
         }
     }
@@ -197,7 +197,7 @@ private class MinimumIncludeIntValueTestee(override val value: Int) : IntValue {
 
 private class MinimumExcludeIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(15, false)
         }
     }
@@ -205,7 +205,7 @@ private class MinimumExcludeIntValueTestee(override val value: Int) : IntValue {
 
 private class MaximumIncludeIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(15, true)
         }
     }
@@ -213,7 +213,7 @@ private class MaximumIncludeIntValueTestee(override val value: Int) : IntValue {
 
 private class MaximumExcludeIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(15, false)
         }
     }
@@ -221,7 +221,7 @@ private class MaximumExcludeIntValueTestee(override val value: Int) : IntValue {
 
 private class EvenIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             even()
         }
     }
@@ -229,7 +229,7 @@ private class EvenIntValueTestee(override val value: Int) : IntValue {
 
 private class OddIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             odd()
         }
     }
@@ -237,7 +237,7 @@ private class OddIntValueTestee(override val value: Int) : IntValue {
 
 private class EvenAndMinimumIntValueTestee(override val value: Int) : IntValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(0, true)
             even()
         }

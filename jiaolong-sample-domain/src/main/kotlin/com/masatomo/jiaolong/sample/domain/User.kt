@@ -3,19 +3,23 @@ package com.masatomo.jiaolong.sample.domain
 import com.masatomo.jiaolong.core.domain.DomainEntity
 import com.masatomo.jiaolong.core.domain.EntityBuilder
 import com.masatomo.jiaolong.core.domain.values.IntegralId
+import com.masatomo.jiaolong.core.domain.values.Name
 import com.masatomo.jiaolong.core.domain.values.StringValue
 import com.masatomo.jiaolong.core.validation.validate
+import com.masatomo.jiaolong.core.validation.values.NameConstraint
 import com.masatomo.jiaolong.core.validation.values.maximumLength
 
 
 @EntityBuilder
+@NameConstraint.MaxLength(20)
 data class User(
     override val id: Id = Id.DEFAULT,
-    var name: Name,
+    var name: Name<User>,
     var password: Password,
 ) : DomainEntity<User, User.Id> {
     init {
-        validate(this) {
+        validate {
+            // TODO
         }
     }
 
@@ -30,18 +34,9 @@ data class User(
     }
 
     @JvmInline
-    value class Name(override val value: String) : StringValue {
-        init {
-            validate(this) {
-                maximumLength(20)
-            }
-        }
-    }
-
-    @JvmInline
     value class Password(override val value: String) : StringValue {
         init {
-            validate(this) {
+            validate {
                 maximumLength(20)
             }
         }

@@ -1,5 +1,6 @@
 package com.masatomo.jiaolong.core.validation.values
 
+import com.masatomo.jiaolong.core.domain.values.Name
 import com.masatomo.jiaolong.core.domain.values.StringValue
 import com.masatomo.jiaolong.core.validation.InvalidValidationException
 import com.masatomo.jiaolong.core.validation.validate
@@ -67,11 +68,28 @@ class StringValueTest : FunSpec({
             }
         }
     }
+
+    context("NameConstraint") {
+        test("XXX has less than 3 characters") {
+            shouldNotThrow<InvalidValidationException> {
+                NameTestee(Name("X".repeat(3)))
+            }
+        }
+        test("XXXX does not have more than 3 characters") {
+            shouldThrow<InvalidValidationException> {
+                NameTestee(Name("X".repeat(4)))
+            }.apply {
+                kClass shouldBeEqual Name.Anonymous::class
+                reasons.size shouldBeEqual 1
+                reasons.first() shouldBeEqual LongLengthString(Name.Anonymous::class, "X".repeat(4), 3)
+            }
+        }
+    }
 })
 
 private class MinimumLengthStringValueTestee(override val value: String) : StringValue {
     init {
-        validate(this) {
+        validate {
             minimumLength(3)
         }
     }
@@ -79,7 +97,7 @@ private class MinimumLengthStringValueTestee(override val value: String) : Strin
 
 private class MaximumLengthStringValueTestee(override val value: String) : StringValue {
     init {
-        validate(this) {
+        validate {
             maximumLength(5)
         }
     }
@@ -87,8 +105,11 @@ private class MaximumLengthStringValueTestee(override val value: String) : Strin
 
 private class MatchRegexStringValueTestee(override val value: String) : StringValue {
     init {
-        validate(this) {
+        validate {
             matchRegex(InstalledPattern.LOWER_CASE)
         }
     }
 }
+
+@NameConstraint.MaxLength(3)
+private data class NameTestee(val value: Name<NameTestee>)

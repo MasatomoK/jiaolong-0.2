@@ -128,7 +128,7 @@ class DoubleValueTest : FunSpec({
 
 private class PositiveDoubleValueTestee(override val value: Double) : DoubleValue {
     init {
-        validate(this) {
+        validate {
             positive()
         }
     }
@@ -136,7 +136,7 @@ private class PositiveDoubleValueTestee(override val value: Double) : DoubleValu
 
 private class NegativeDoubleValueTestee(override val value: Double) : DoubleValue {
     init {
-        validate(this) {
+        validate {
             negative()
         }
     }
@@ -144,7 +144,7 @@ private class NegativeDoubleValueTestee(override val value: Double) : DoubleValu
 
 private class MinimumIncludeDoubleValueTestee(override val value: Double) : DoubleValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(15.0, true)
         }
     }
@@ -152,7 +152,7 @@ private class MinimumIncludeDoubleValueTestee(override val value: Double) : Doub
 
 private class MinimumExcludeDoubleValueTestee(override val value: Double) : DoubleValue {
     init {
-        validate(this) {
+        validate {
             minimumWith(15.0, false)
         }
     }
@@ -160,7 +160,7 @@ private class MinimumExcludeDoubleValueTestee(override val value: Double) : Doub
 
 private class MaximumIncludeDoubleValueTestee(override val value: Double) : DoubleValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(15.0, true)
         }
     }
@@ -168,7 +168,7 @@ private class MaximumIncludeDoubleValueTestee(override val value: Double) : Doub
 
 private class MaximumExcludeDoubleValueTestee(override val value: Double) : DoubleValue {
     init {
-        validate(this) {
+        validate {
             maximumWith(15.0, false)
         }
     }

@@ -80,7 +80,7 @@ class LocalDateTimeTimeValueTest : FunSpec({
 
 private class AfterLocalDateTimeValueTestee(override val value: LocalDateTime) : LocalDateTimeValue {
     init {
-        validate(this) {
+        validate {
             after(LocalDateTime.of(2000, 1, 1, 0, 0, 0))
         }
     }
@@ -88,7 +88,7 @@ private class AfterLocalDateTimeValueTestee(override val value: LocalDateTime) :
 
 private class BeforeLocalDateTimeValueTestee(override val value: LocalDateTime) : LocalDateTimeValue {
     init {
-        validate(this) {
+        validate {
             before(LocalDateTime.of(2000, 1, 1, 0, 0, 0))
         }
     }
@@ -96,7 +96,7 @@ private class BeforeLocalDateTimeValueTestee(override val value: LocalDateTime) 
 
 private class DayOfWeekLocalDateTimeValueTestee(override val value: LocalDateTime) : LocalDateTimeValue {
     init {
-        validate(this) {
+        validate {
             dayOfWeeksIn(DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
         }
     }

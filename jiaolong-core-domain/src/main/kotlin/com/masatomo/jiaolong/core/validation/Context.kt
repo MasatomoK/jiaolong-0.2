@@ -39,6 +39,6 @@ interface InvalidReason {
 class InvalidValidationException(code: String, val kClass: KClass<*>, val reasons: List<InvalidReason>) :
     ApplicationRuntimeException(code)
 
-fun <V : Any> V.validate(target: V, block: ValidationContext<V>.() -> Unit) {
-    ValidationContext(target).apply(block).throwExceptionIfInvalid()
+fun <V : Any> V.validate(block: ValidationContext<V>.() -> Unit) {
+    ValidationContext(this).apply(block).throwExceptionIfInvalid()
 }

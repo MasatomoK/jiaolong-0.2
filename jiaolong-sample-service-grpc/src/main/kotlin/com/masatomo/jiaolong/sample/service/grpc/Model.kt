@@ -1,6 +1,7 @@
 package com.masatomo.jiaolong.sample.service.grpc
 
 import com.masatomo.jiaolong.core.domain.values.IntegralId
+import com.masatomo.jiaolong.core.domain.values.Name
 import com.masatomo.jiaolong.sample.domain.User
 import com.masatomo.jiaolong.sample.domain.UserBuilder
 import com.masatomo.jiaolong.sample.grpc.SampleModel
@@ -15,7 +16,7 @@ internal fun User.toModel() = user {
 
 internal fun SampleModel.User.toUserId() = UserBuilder()
     .withId(User.Id(id))
-    .withName(User.Name(name))
+    .withName(Name(name))
     .withPassword(User.Password(password))
     .build()
 
