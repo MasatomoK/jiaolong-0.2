@@ -8,9 +8,14 @@ open class ProjectGroup(private vararg val paths: String = arrayOf("")) {
         val path get() = paths.joinToString(":")
     }
 }
+
 fun Project.project(project: ProjectGroup.Project): Project = project(project.path)
 
 object Jiaolong {
+    object Lib : ProjectGroup("") {
+        val numeric = project("jiaolong-lib-numeric")
+    }
+
     object Core : ProjectGroup("") {
         val ksp = project("jiaolong-core-ksp")
         val domain = project("jiaolong-core-domain")
@@ -27,6 +32,13 @@ object Jiaolong {
         val server = project("jiaolong-admin-server")
     }
 
+    object Master : ProjectGroup("") {
+        val domain = project("jiaolong-master-domain")
+        val repository = project("jiaolong-master-repository")
+        val service = project("jiaolong-master-service")
+        val serviceGrpc = project("jiaolong-master-service-grpc")
+    }
+
     object Sample : ProjectGroup("") {
         val domain = project("jiaolong-sample-domain")
         val repository = project("jiaolong-sample-repository")
@@ -34,16 +46,12 @@ object Jiaolong {
         val serviceGrpc = project("jiaolong-sample-service-grpc")
     }
 
-    object Price : ProjectGroup("") {
-        val domain = project("jiaolong-price-domain")
-    }
-
-    object Customer : ProjectGroup("") {
+    object First : ProjectGroup("") {
         val server = project("jiaolong-customer-server")
     }
 }
 
 
-internal const val protocArtifact = "com.google.protobuf:protoc:3.22.+"
-internal const val grpcJavaGenArtifact = "io.grpc:protoc-gen-grpc-java:1.54.+"
-internal const val grpcKotlinGenArtifact = "io.grpc:protoc-gen-grpc-kotlin:1.3.+:jdk8@jar"
+internal const val protocArtifact = "com.google.protobuf:protoc:3.25.+"
+internal const val grpcJavaGenArtifact = "io.grpc:protoc-gen-grpc-java:1.60.+"
+internal const val grpcKotlinGenArtifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.+:jdk8@jar"

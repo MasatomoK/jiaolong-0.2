@@ -20,11 +20,7 @@ import org.gradle.external.javadoc.CoreJavadocOptions
 import org.gradle.jvm.tasks.Jar
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JvmVendorSpec
-import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.getByName
-import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.task
-import org.gradle.kotlin.dsl.withType
+import org.gradle.kotlin.dsl.*
 import org.gradle.plugins.ide.idea.IdeaPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
@@ -105,8 +101,8 @@ class SetupKotlin : Plugin<Project> {
 
             tasks.withType<KotlinCompile>().configureEach {
                 kotlinOptions {
-                    apiVersion = "1.8"
-                    languageVersion = "1.8"
+                    apiVersion = "1.9"
+                    languageVersion = "1.9"
                     jvmTarget = "17"
                     // freeCompilerArgs += "-Xkey=value"
                 }
